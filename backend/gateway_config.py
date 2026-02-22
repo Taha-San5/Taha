@@ -40,6 +40,8 @@ def write_gateway_env(token: str, api_key: str = None, provider: str = "emergent
             lines.append(f'export ANTHROPIC_API_KEY="{api_key}"')
         elif provider == "openai":
             lines.append(f'export OPENAI_API_KEY="{api_key}"')
+        elif provider == "custom":
+            lines.append(f'export CUSTOM_API_KEY="{api_key}"')
         # For emergent provider, the API key is in the config file, not env var
 
     # Write the file
