@@ -144,10 +144,16 @@ export default function SetupPage() {
       toast.error('Please choose a provider');
       return;
     }
-    // Only require API key for non-emergent providers
+    // Require API key for non-emergent providers
     if (provider !== 'emergent' && (!apiKey || apiKey.length < 10)) {
       setError('Please enter a valid API key.');
       toast.error('Please enter a valid API key');
+      return;
+    }
+    // Custom provider requires a base URL
+    if (provider === 'custom' && !baseUrl.trim()) {
+      setError('Please enter the base URL for your custom provider.');
+      toast.error('Base URL is required for custom providers');
       return;
     }
 
@@ -166,6 +172,10 @@ export default function SetupPage() {
       const payload = { provider };
       if (provider !== 'emergent' && apiKey) {
         payload.apiKey = apiKey;
+      }
+      if (provider === 'custom') {
+        payload.baseUrl = baseUrl.trim();
+        if (modelId.trim()) payload.modelId = modelId.trim();
       }
 
       const res = await fetch(`${API}/openclaw/start`, {
