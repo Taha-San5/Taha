@@ -639,6 +639,35 @@ def create_moltbot_config(token: str = None, api_key: str = None, provider: str 
             "primary": "anthropic/claude-opus-4-5-20251101"
         }
 
+    elif provider == "custom":
+        # Generic OpenAI-compatible provider with user-supplied base URL
+        final_model_id = model_id or "gpt-4"
+        custom_provider = {
+            "baseUrl": base_url,
+            "apiKey": api_key or "none",
+            "api": "openai-completions",
+            "models": [
+                {
+                    "id": final_model_id,
+                    "name": final_model_id,
+                    "input": ["text"],
+                    "cost": {"input": 0, "output": 0},
+                    "contextWindow": 128000,
+                    "maxTokens": 32000
+                }
+            ]
+        }
+
+        existing_config["models"]["providers"]["custom"] = custom_provider
+
+        # Set primary model to the custom model
+        existing_config["agents"]["defaults"]["models"] = {
+            f"custom/{final_model_id}": {"alias": "custom"}
+        }
+        existing_config["agents"]["defaults"]["model"] = {
+            "primary": f"custom/{final_model_id}"
+        }
+
     with open(CONFIG_FILE, "w") as f:
         json.dump(existing_config, f, indent=2)
 
