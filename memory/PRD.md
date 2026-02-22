@@ -6,19 +6,23 @@ MoltBot was installed on the Emergent platform using the official install script
 ## Installation Date
 February 22, 2026
 
-## Steps Completed
-1. Retrieved Emergent LLM key via `emergent_integrations_manager`
-2. Ran MoltBot install script in background with `NEW_LLM_KEY` set
-3. LLM key replaced in `/app/backend/.env`
-4. Frontend rebuilt successfully (production build)
-5. All services started via supervisor
+## What's Been Implemented
+
+### Session 1 — MoltBot Installation (Feb 22, 2026)
+- MoltBot installed via official install script
+- LLM key injected, frontend rebuilt, all services running
+
+### Session 2 — Custom Provider Feature (Feb 22, 2026)
+- Added "Custom (OpenAI-compatible)" option to the provider dropdown
+- Frontend: new `baseUrl` (required) and `modelId` (optional) input fields appear when Custom is selected
+- Backend: `OpenClawStartRequest` updated with `baseUrl` and `modelId` fields; new validation; `create_moltbot_config` handles `custom` provider case (openai-completions API with user-supplied base URL and model)
+- `gateway_config.py` updated to export `CUSTOM_API_KEY` env var
 
 ## Service Status (Post-Install)
-- **backend**: RUNNING (pid 481)
-- **frontend**: RUNNING (pid 482)
-- **mongodb**: RUNNING (pid 501)
-- **nginx-code-proxy**: RUNNING (pid 517)
-- **clawdbot-gateway**: STOPPED (not started — optional component)
+- **backend**: RUNNING
+- **frontend**: RUNNING
+- **mongodb**: RUNNING
+- **nginx-code-proxy**: RUNNING
 
 ## Architecture
 - React frontend (production build)
