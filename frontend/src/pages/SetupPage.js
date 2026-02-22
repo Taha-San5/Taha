@@ -374,7 +374,7 @@ export default function SetupPage() {
                   <Select 
                     onValueChange={(val) => {
                       setProvider(val);
-                      if (val === 'emergent') setApiKey('');
+                      if (val === 'emergent') { setApiKey(''); setBaseUrl(''); setModelId(''); }
                     }} 
                     value={provider}
                     disabled={loading}
@@ -396,11 +396,19 @@ export default function SetupPage() {
                       <SelectItem value="openai" className="focus:bg-[#1f2022]">
                         OpenAI (GPT) - Bring your own key
                       </SelectItem>
+                      <SelectItem value="custom" className="focus:bg-[#1f2022]">
+                        Custom (OpenAI-compatible)
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   {provider === 'emergent' && (
                     <p className="text-xs text-[#22c55e]">
                       Pre-configured with Claude Opus 4.5 and GPT-5.2 - no API key needed
+                    </p>
+                  )}
+                  {provider === 'custom' && (
+                    <p className="text-xs text-zinc-500">
+                      Compatible with any OpenAI-API endpoint (Ollama, LM Studio, Azure, Groq, etc.)
                     </p>
                   )}
                 </div>
