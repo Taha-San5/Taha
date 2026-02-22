@@ -144,8 +144,8 @@ export default function SetupPage() {
       toast.error('Please choose a provider');
       return;
     }
-    // Require API key for non-emergent providers
-    if (provider !== 'emergent' && (!apiKey || apiKey.length < 10)) {
+    // Require API key for anthropic/openai providers (not for custom)
+    if (['anthropic', 'openai'].includes(provider) && (!apiKey || apiKey.length < 10)) {
       setError('Please enter a valid API key.');
       toast.error('Please enter a valid API key');
       return;
