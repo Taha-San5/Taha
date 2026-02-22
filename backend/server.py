@@ -417,7 +417,7 @@ def generate_token():
     return secrets.token_hex(32)
 
 
-def create_moltbot_config(token: str = None, api_key: str = None, provider: str = "emergent", force_new_token: bool = False):
+def create_moltbot_config(token: str = None, api_key: str = None, provider: str = "emergent", force_new_token: bool = False, base_url: str = None, model_id: str = None):
     """Update clawdbot.json with gateway config and provider settings
 
     Args:
