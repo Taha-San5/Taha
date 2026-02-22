@@ -426,7 +426,7 @@ export default function SetupPage() {
                         onChange={(e) => setApiKey(e.target.value)}
                         disabled={loading}
                         className="pr-20 tracking-wider bg-[#0f0f10] border-[#1f2022] focus-visible:ring-[#FF4500] focus-visible:ring-offset-0 h-11 api-key-input"
-                        placeholder={provider === 'openai' ? 'sk-...' : 'sk-ant-...'}
+                        placeholder={provider === 'openai' ? 'sk-...' : provider === 'custom' ? 'Your API key (if required)' : 'sk-ant-...'}
                         aria-describedby="apiKeyHelp"
                       />
                       <Button
@@ -449,6 +449,49 @@ export default function SetupPage() {
                       Your key is used only to start OpenClaw and is stored securely.
                     </p>
                   </div>
+                )}
+
+                {/* Custom provider fields */}
+                {provider === 'custom' && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="baseUrl" className="text-zinc-200">Base URL</Label>
+                      <Input
+                        id="baseUrl"
+                        data-testid="custom-base-url-input"
+                        type="text"
+                        value={baseUrl}
+                        onChange={(e) => setBaseUrl(e.target.value)}
+                        disabled={loading}
+                        className="bg-[#0f0f10] border-[#1f2022] focus-visible:ring-[#FF4500] focus-visible:ring-offset-0 h-11"
+                        placeholder="https://api.example.com/v1/"
+                        aria-describedby="baseUrlHelp"
+                      />
+                      <p id="baseUrlHelp" className="text-xs text-zinc-500">
+                        The OpenAI-compatible endpoint base URL (e.g. http://localhost:11434/v1/ for Ollama).
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="modelId" className="text-zinc-200">
+                        Model ID <span className="text-zinc-500 font-normal">(optional)</span>
+                      </Label>
+                      <Input
+                        id="modelId"
+                        data-testid="custom-model-id-input"
+                        type="text"
+                        value={modelId}
+                        onChange={(e) => setModelId(e.target.value)}
+                        disabled={loading}
+                        className="bg-[#0f0f10] border-[#1f2022] focus-visible:ring-[#FF4500] focus-visible:ring-offset-0 h-11"
+                        placeholder="e.g. llama3, mistral, gpt-4o-mini"
+                        aria-describedby="modelIdHelp"
+                      />
+                      <p id="modelIdHelp" className="text-xs text-zinc-500">
+                        The model identifier your endpoint expects. Defaults to <code className="text-zinc-400">gpt-4</code> if left blank.
+                      </p>
+                    </div>
+                  </>
                 )}
 
                 {/* Error Alert */}
