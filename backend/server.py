@@ -694,7 +694,7 @@ async def start_gateway_process(api_key: str, provider: str, owner_user_id: str,
 
         if not token:
             token = generate_token()
-            create_moltbot_config(token=token, api_key=api_key, provider=provider, force_new_token=True)
+            create_moltbot_config(token=token, api_key=api_key, provider=provider, force_new_token=True, base_url=base_url, model_id=model_id)
 
         gateway_state["token"] = token
         gateway_state["provider"] = provider
