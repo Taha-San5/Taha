@@ -802,12 +802,16 @@ async def start_moltbot(request: OpenClawStartRequest, req: Request):
     """Start the Moltbot gateway with Emergent provider (requires auth)"""
     user = await require_auth(req)
 
-    if request.provider not in ["emergent", "anthropic", "openai"]:
-        raise HTTPException(status_code=400, detail="Invalid provider. Use 'emergent', 'anthropic', or 'openai'")
+    if request.provider not in ["emergent", "anthropic", "openai", "custom"]:
+        raise HTTPException(status_code=400, detail="Invalid provider. Use 'emergent', 'anthropic', 'openai', or 'custom'")
 
-    # For non-emergent providers, API key is required
+    # For non-emergent providers, API key is required (except custom where it's optional)
     if request.provider in ["anthropic", "openai"] and (not request.apiKey or len(request.apiKey) < 10):
         raise HTTPException(status_code=400, detail="API key required for anthropic/openai providers")
+
+    # Custom provider requires a base URL
+    if request.provider == "custom" and not request.baseUrl:
+        raise HTTPException(status_code=400, detail="baseUrl is required for custom provider")
 
     # Check if Moltbot is already running by another user
     if check_gateway_running() and gateway_state["owner_user_id"] != user.user_id:
