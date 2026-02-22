@@ -537,7 +537,7 @@ export default function SetupPage() {
                 <Button
                   onClick={start}
                   data-testid="start-moltbot-button"
-                  disabled={loading || !provider || (provider !== 'emergent' && !apiKey) || (provider === 'custom' && !baseUrl.trim()) || (status?.running && !status?.is_owner)}
+                  disabled={loading || !provider || (['anthropic', 'openai'].includes(provider) && !apiKey) || (provider === 'custom' && !baseUrl.trim()) || (status?.running && !status?.is_owner)}
                   className="w-full sm:w-auto bg-[#FF4500] hover:bg-[#E63E00] text-white font-medium h-11 px-6 btn-primary"
                 >
                   {loading ? (
