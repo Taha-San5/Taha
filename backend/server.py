@@ -729,7 +729,7 @@ async def start_gateway_process(api_key: str, provider: str, owner_user_id: str,
             raise HTTPException(status_code=500, detail="Failed to find clawdbot after installation")
 
     # Create config (reuses existing token to avoid gateway restarts)
-    token = create_moltbot_config(api_key=api_key, provider=provider)
+    token = create_moltbot_config(api_key=api_key, provider=provider, base_url=base_url, model_id=model_id)
 
     # Write environment file for supervisor wrapper to load
     write_gateway_env(token=token, api_key=api_key, provider=provider)
