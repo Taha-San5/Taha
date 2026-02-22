@@ -675,7 +675,7 @@ def create_moltbot_config(token: str = None, api_key: str = None, provider: str 
     return final_token  # Return the token being used
 
 
-async def start_gateway_process(api_key: str, provider: str, owner_user_id: str):
+async def start_gateway_process(api_key: str, provider: str, owner_user_id: str, base_url: str = None, model_id: str = None):
     """Start the Moltbot gateway process via supervisor (persistent, survives backend restarts)"""
     global gateway_state
 
