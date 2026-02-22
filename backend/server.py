@@ -821,7 +821,7 @@ async def start_moltbot(request: OpenClawStartRequest, req: Request):
         )
 
     try:
-        token = await start_gateway_process(request.apiKey, request.provider, user.user_id)
+        token = await start_gateway_process(request.apiKey, request.provider, user.user_id, base_url=request.baseUrl, model_id=request.modelId)
 
         # Lock the instance to this user on first successful start
         await set_instance_owner(user)
