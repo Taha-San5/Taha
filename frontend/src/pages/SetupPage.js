@@ -22,6 +22,8 @@ export default function SetupPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(location.state?.user ? true : null);
   const [provider, setProvider] = useState('emergent');
   const [apiKey, setApiKey] = useState('');
+  const [baseUrl, setBaseUrl] = useState('');
+  const [modelId, setModelId] = useState('');
   const [reveal, setReveal] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [loading, setLoading] = useState(false);
