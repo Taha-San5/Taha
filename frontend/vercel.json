@@ -1,9 +1,8 @@
 {
-  "framework": "create-react-app",
-  "buildCommand": "yarn build",
-  "outputDirectory": "build",
-  "installCommand": "yarn install",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/api/:path*",
+      "destination": "http://35.173.199.138:8001/:path*"
+    }
   ]
 }
