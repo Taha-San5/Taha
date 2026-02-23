@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install Node.js 22
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs && \
+    apt-get install -y git nodejs && \
     rm -rf /var/lib/apt/lists/*
 
 # Install clawdbot globally
