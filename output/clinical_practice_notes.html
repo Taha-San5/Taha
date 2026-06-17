@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Clinical Practice Medical Surgical II - شرح شامل</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 22mm 16mm;
+    @bottom-center {
+      content: "صفحة " counter(page) " من " counter(pages);
+      font-family: "Noto Sans Arabic", "Noto Sans", sans-serif;
+      font-size: 9pt;
+      color: #6b7280;
+    }
+    @top-right {
+      content: "Clinical Practice Medical Surgical II";
+      font-family: "Noto Sans", sans-serif;
+      font-size: 9pt;
+      color: #6b7280;
+    }
+  }
+
+  @page :first {
+    margin: 0;
+    @bottom-center { content: ""; }
+    @top-right { content: ""; }
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    font-family: "Noto Sans Arabic", "Noto Sans", "DejaVu Sans", sans-serif;
+    font-size: 11pt;
+    line-height: 1.7;
+    color: #1f2937;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ---------- Cover page ---------- */
+  .cover {
+    page: cover;
+    height: 297mm;
+    width: 210mm;
+    background: linear-gradient(135deg, #0f766e 0%, #0e7490 50%, #1e3a8a 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40mm 20mm;
+    page-break-after: always;
+    position: relative;
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    inset: 12mm;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-radius: 6mm;
+    pointer-events: none;
+  }
+  .cover .badge {
+    font-size: 13pt;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 18px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .cover h1 {
+    font-size: 36pt;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+  }
+  .cover h2 {
+    font-size: 22pt;
+    font-weight: 600;
+    margin: 0 0 30px 0;
+    color: #e0f2fe;
+  }
+  .cover .subtitle {
+    font-size: 14pt;
+    max-width: 140mm;
+    color: #f1f5f9;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  .cover .meta {
+    margin-top: auto;
+    font-size: 11pt;
+    color: #cbd5e1;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 16px;
+    width: 80%;
+  }
+  .cover .topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .cover .topics span {
+    background: rgba(255,255,255,0.18);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 11pt;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* ---------- Table of contents ---------- */
+  .toc {
+    page-break-after: always;
+  }
+  .toc h2 {
+    color: #0f766e;
+    font-size: 22pt;
+    border-bottom: 3px solid #0f766e;
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+  }
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: toc;
+  }
+  .toc li {
+    counter-increment: toc;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background: #f0fdfa;
+    border-right: 4px solid #0f766e;
+    border-radius: 6px;
+    font-size: 12pt;
+    display: flex;
+    align-items: center;
+  }
+  .toc li::before {
+    content: counter(toc);
+    background: #0f766e;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-left: 12px;
+    flex-shrink: 0;
+  }
+
+  /* ---------- Content ---------- */
+  .content { padding: 0 0 10mm 0; }
+
+  h1.section {
+    color: #ffffff;
+    background: linear-gradient(90deg, #0f766e, #14b8a6);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 20pt;
+    margin: 30px 0 18px 0;
+    page-break-before: always;
+    page-break-after: avoid;
+    box-shadow: 0 2px 6px rgba(15, 118, 110, 0.25);
+  }
+  h1.section:first-of-type { page-break-before: auto; }
+
+  h3 {
+    color: #0e7490;
+    font-size: 14pt;
+    border-right: 5px solid #0e7490;
+    padding-right: 10px;
+    margin-top: 22px;
+    margin-bottom: 10px;
+    page-break-after: avoid;
+  }
+  h4 {
+    color: #1e40af;
+    font-size: 12.5pt;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    page-break-after: avoid;
+  }
+
+  p { margin: 6px 0; }
+
+  ul, ol { margin: 6px 24px 10px 24px; padding: 0; }
+  li { margin-bottom: 4px; }
+
+  strong { color: #0f172a; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 18px 0;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  thead { background: #0f766e; color: #ffffff; }
+  thead th {
+    padding: 9px 10px;
+    text-align: right;
+    font-weight: 700;
+    border: 1px solid #0e6660;
+  }
+  tbody td {
+    padding: 8px 10px;
+    border: 1px solid #d1d5db;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) { background: #f9fafb; }
+  tbody tr:nth-child(odd)  { background: #ffffff; }
+
+  /* Numbered first column */
+  table.steps tbody td:first-child {
+    background: #ecfeff;
+    color: #0e7490;
+    font-weight: 700;
+    text-align: center;
+    width: 32px;
+  }
+
+  /* Notes / callouts */
+  .note {
+    background: #fef3c7;
+    border-right: 5px solid #f59e0b;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+  .warn {
+    background: #fee2e2;
+    border-right: 5px solid #dc2626;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+  .tip {
+    background: #dcfce7;
+    border-right: 5px solid #16a34a;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+  .info {
+    background: #dbeafe;
+    border-right: 5px solid #2563eb;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+
+  .callout-title { font-weight: 700; display: block; margin-bottom: 4px; }
+
+  /* Color swatches for cannulas */
+  .swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid #94a3b8;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* Q&A */
+  .qa {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    page-break-inside: avoid;
+  }
+  .qa .q { color: #0f766e; font-weight: 700; }
+  .qa .a { color: #1e3a8a; font-weight: 600; margin-top: 4px; display: block; }
+
+  /* Final card */
+  .final {
+    background: linear-gradient(135deg, #0f766e, #1e3a8a);
+    color: white;
+    padding: 18px 22px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+    page-break-inside: avoid;
+  }
+  .final h3 {
+    color: white;
+    border: none;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+
+  hr.fancy {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0f766e, transparent);
+    margin: 20px 0;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 9.5pt;
+    font-weight: 600;
+    margin: 0 2px;
+  }
+  .pill-en { background:#e0f2fe; color:#075985; }
+  .pill-ar { background:#fef9c3; color:#854d0e; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    page-break-inside: avoid;
+  }
+  .card h4 { margin-top: 0; color: #0f766e; }
+</style>
+</head>
+<body>
+
+<!-- ============== COVER ============== -->
+<div class="cover">
+  <div class="badge">Medical Surgical Nursing II</div>
+  <h1>Clinical Practice</h1>
+  <h2>شرح شامل ومراجعة سريعة</h2>
+  <p class="subtitle">
+    دليل دراسي احترافي يجمع بين النص الإنجليزي والترجمة العربية
+    <br>
+    لخطوات الإجراءات السريرية الأساسية في تمريض الجراحة الباطنية
+  </p>
+  <div class="topics">
+    <span>Wound Care</span>
+    <span>Suture Removal</span>
+    <span>IV Therapy</span>
+    <span>Chest Physiotherapy</span>
+    <span>NGT Insertion</span>
+  </div>
+  <div class="meta">
+    English &amp; Arabic Bilingual Edition &nbsp;•&nbsp; إعداد مرجعي للامتحان
+  </div>
+</div>
+
+<!-- ============== TOC ============== -->
+<div class="toc">
+  <h2>المحتويات | Table of Contents</h2>
+  <ol>
+    <li>Wound Care &nbsp;—&nbsp; العناية بالجروح</li>
+    <li>Surgical Suture Removal &nbsp;—&nbsp; إزالة الغرز الجراحية</li>
+    <li>IV Therapy &nbsp;—&nbsp; العلاج الوريدي</li>
+    <li>Chest Physiotherapy &nbsp;—&nbsp; العلاج التنفسي</li>
+    <li>NGT Insertion &amp; Care &nbsp;—&nbsp; تركيب أنبوبة المعدة الأنفية</li>
+    <li>Quick Review &nbsp;—&nbsp; مراجعة سريعة للامتحان</li>
+    <li>Final Tips &nbsp;—&nbsp; نصائح أخيرة</li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ============== 1) WOUND CARE ============== -->
+<h1 class="section">1) Wound Care &nbsp;|&nbsp; العناية بالجروح</h1>
+
+<h3>Applying a Dry Sterile Dressing &nbsp;—&nbsp; وضع ضمادة جافة معقمة</h3>
+
+<h4>Key Vocabulary &nbsp;—&nbsp; المصطلحات المهمة</h4>
+<table>
+  <thead><tr><th>English</th><th>عربي</th></tr></thead>
+  <tbody>
+    <tr><td>Wound</td><td>جرح</td></tr>
+    <tr><td>Dressing</td><td>ضمادة</td></tr>
+    <tr><td>Sterile</td><td>معقم</td></tr>
+    <tr><td>Gauze</td><td>شاش</td></tr>
+    <tr><td>Gloves</td><td>قفازات</td></tr>
+    <tr><td>Tape</td><td>شريط لاصق</td></tr>
+    <tr><td>Drain</td><td>أنبوبة تصريف</td></tr>
+    <tr><td>Contamination</td><td>تلوث</td></tr>
+    <tr><td>Saline</td><td>محلول ملحي</td></tr>
+    <tr><td>Adhesive</td><td>لاصق</td></tr>
+  </tbody>
+</table>
+
+<h4>Equipment &nbsp;—&nbsp; الأدوات</h4>
+<ul>
+  <li><strong>Clean disposable gloves</strong> — قفازات نظيفة للاستعمال مرة واحدة</li>
+  <li><strong>Sterile gloves</strong> — قفازات معقمة</li>
+  <li><strong>Moisture-proof bag</strong> — كيس مقاوم للرطوبة (للنفايات)</li>
+  <li><strong>Bath blanket</strong> — بطانية للتغطية</li>
+  <li><strong>Tape</strong> — شريط لاصق</li>
+  <li><strong>Adhesive remover or cotton with saline</strong> — مزيل اللاصق أو قطن بمحلول ملحي</li>
+  <li><strong>Cleansing solution</strong> — محلول للتنظيف</li>
+  <li><strong>Sterile dressing set</strong> — طقم ضمادات معقم يحتوي على:
+    <ul>
+      <li>Sterile drape — غطاء معقم</li>
+      <li>Gauze dressing (Surgi pads) — ضمادات شاش</li>
+      <li>Sterile container — وعاء معقم للمحلول</li>
+      <li>Precut gauze if a drain is present — شاش مقصوص مسبقاً لو فيه أنبوبة تصريف</li>
+    </ul>
+  </li>
+</ul>
+
+<h4>Procedure &nbsp;—&nbsp; الخطوات (Action &amp; Rationale)</h4>
+<table class="steps">
+  <thead><tr><th style="width:32px;">#</th><th>Action — الإجراء</th><th>Rationale — السبب</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Review medical orders</strong> — راجع أوامر الطبيب</td><td>Physician's order is needed — لازم يكون فيه أمر طبي</td></tr>
+    <tr><td>2</td><td><strong>Explain procedure to patient</strong> — اشرح الإجراء للمريض</td><td>Decreases anxiety, increases cooperation — يقلل القلق ويزيد التعاون</td></tr>
+    <tr><td>3</td><td><strong>Gather equipment</strong> — جهز الأدوات</td><td>Promotes efficient time management — يوفر الوقت</td></tr>
+    <tr><td>4</td><td><strong>Wash your hands</strong> — اغسل يديك</td><td>Decreases spread of microorganisms — يقلل انتشار الميكروبات</td></tr>
+    <tr><td>5</td><td><strong>Keep patient privacy</strong> (close door/curtain) — حافظ على خصوصية المريض</td><td>Provides privacy and warmth — يوفر الخصوصية والدفء</td></tr>
+    <tr><td>6</td><td><strong>Position the patient</strong> with bath blanket — ضع المريض في وضع مناسب وغطه</td><td>Prevents chilling — يمنع البرد</td></tr>
+    <tr><td>7</td><td><strong>Place moisture-proof bag</strong> within reach — ضع كيس النفايات قريب</td><td>Receptacle for contaminated dressings — مكان للضمادات الملوثة</td></tr>
+    <tr><td>8</td><td><strong>Assist patient to comfortable position</strong> — ساعد المريض على وضع مريح</td><td>Comfort + good body mechanics — راحة المريض</td></tr>
+    <tr><td>9</td><td><strong>Wear disposable gloves &amp; loosen tape</strong> — البس قفازات وفك الشريط</td><td>Prevents transmission of microorganisms — يمنع نقل الميكروبات</td></tr>
+    <tr><td>10</td><td><strong>Assess the wound</strong> (odor, drainage, color) — افحص الجرح (الرائحة، الإفرازات، اللون)</td><td>Assess for complications and healing — لتقييم المضاعفات والشفاء</td></tr>
+    <tr><td>11</td><td><strong>Open sterile dressing tray</strong> — افتح طقم الضمادات المعقم</td><td>Maintains sterile technique — يحافظ على التعقيم</td></tr>
+    <tr><td>12</td><td><strong>Pour solution into sterile basin</strong> — اسكب المحلول في الوعاء المعقم</td><td>Keeps supplies sterile — يحافظ على التعقيم</td></tr>
+    <tr><td>13</td><td><strong>Don sterile gloves</strong> — البس القفازات المعقمة</td><td>Prevents introduction of microorganisms — يمنع دخول الميكروبات</td></tr>
+    <tr><td>14</td><td><strong>Clean wound from center to outer area</strong> (least to most contaminated, new swab each stroke) — نظف الجرح من المركز للخارج (من الأقل تلوثاً للأكثر، شاشة جديدة كل مرة)</td><td>Avoids contamination — يمنع التلوث</td></tr>
+    <tr><td>15</td><td><strong>If drain present, apply precut dressing around it</strong> — لو فيه drain ضع شاش مقصوص حواليه</td><td>Absorbs exudate — يمتص الإفرازات</td></tr>
+    <tr><td>16</td><td><strong>Apply sterile dressing over wound</strong> — ضع الضمادة المعقمة على الجرح</td><td>Provides protection — يحمي الجرح</td></tr>
+    <tr><td>17</td><td><strong>Secure dressing with tape</strong> (paper tape for fragile skin) — ثبت الضمادة بالشريط (شريط ورقي للجلد الحساس)</td><td>Prevents skin breakdown — يمنع تلف الجلد</td></tr>
+    <tr><td>18</td><td><strong>Remove gloves, dispose, wash hands</strong> — اخلع القفازات وارمها واغسل يديك</td><td>Prevents transfer of pathogens — يمنع نقل الجراثيم</td></tr>
+    <tr><td>19</td><td><strong>Reassess patient</strong> — أعد تقييم المريض</td><td>Determines effect of dressing change — لتحديد تأثير تغيير الضمادة</td></tr>
+    <tr><td>20</td><td><strong>Document findings</strong> — وثق كل ما حدث</td><td>Records for evaluation — للتقييم لاحقاً</td></tr>
+  </tbody>
+</table>
+
+<div class="tip">
+  <span class="callout-title">Important Tip — نصيحة مهمة</span>
+  Always clean <strong>from clean to dirty</strong> (center → outer).<br>
+  دائماً نظف <strong>من النظيف للمتسخ</strong> (من المنتصف للخارج).
+</div>
+
+<!-- ============== 2) SUTURE REMOVAL ============== -->
+<h1 class="section">2) Surgical Suture Removal &nbsp;|&nbsp; إزالة الغرز الجراحية</h1>
+
+<h3>Definitions &nbsp;—&nbsp; التعريفات</h3>
+<div class="info">
+  <span class="callout-title">Wound suturing — خياطة الجرح</span>
+  A procedure to close a wound using stitches to hold edges together.<br>
+  إجراء لإغلاق الجرح باستخدام غرز تثبت حواف الجرح مع بعض.
+</div>
+<div class="info">
+  <span class="callout-title">Suture removal — إزالة الغرز</span>
+  Procedure to take sutures out of the skin to prevent scarring.<br>
+  إجراء لإخراج الغرز من الجلد لمنع التندب.
+</div>
+
+<h3>Purposes of Suturing &nbsp;—&nbsp; أهداف الخياطة</h3>
+<ul>
+  <li><strong>Stop bleeding</strong> — إيقاف النزيف</li>
+  <li><strong>Reduce pain and infection</strong> — تقليل الألم والعدوى</li>
+  <li><strong>Repair the cutaneous wound</strong> — إصلاح الجرح الجلدي</li>
+  <li><strong>Minimize scarring</strong> — تقليل الندوب</li>
+  <li><strong>Maximize wound healing</strong> — تعزيز شفاء الجرح</li>
+</ul>
+
+<h3>Types of Sutures &nbsp;—&nbsp; أنواع الغرز</h3>
+<h4>A) According to Material — حسب المادة</h4>
+<table>
+  <thead><tr><th>Type</th><th>المعنى</th><th>Examples — أمثلة</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Absorbable</strong></td><td>يمتصها الجسم</td><td>Catgut, Chromic gut</td></tr>
+    <tr><td><strong>Non-absorbable</strong></td><td>لا يمتصها الجسم</td><td>Nylon, Prolene, Silk</td></tr>
+    <tr><td><strong>Monofilament</strong></td><td>خيط واحد</td><td>Nylon, Monocryl, Prolene</td></tr>
+    <tr><td><strong>Multifilament (braided)</strong></td><td>مضفور (عدة خيوط)</td><td>Vicryl, Silk</td></tr>
+    <tr><td><strong>Natural</strong></td><td>طبيعي</td><td>Catgut, Silk</td></tr>
+    <tr><td><strong>Synthetic</strong></td><td>صناعي</td><td>Nylon, Vicryl, Monocryl</td></tr>
+  </tbody>
+</table>
+
+<h4>B) According to Technique — حسب التقنية</h4>
+<ol>
+  <li><strong>Interrupted suture</strong> — غرز متقطعة (كل غرزة مستقلة)</li>
+  <li><strong>Continuous suture</strong> — غرز متصلة (خيط واحد متواصل)</li>
+  <li><strong>Vertical mattress</strong> — غرز عمودية (للحواف المقعرة - الرقبة، الجبهة)</li>
+</ol>
+
+<div class="note">
+  <span class="callout-title">Suture Sizes — مقاسات الغرز</span>
+  <strong>Smaller number = Larger thread</strong> &nbsp;|&nbsp; <strong>الرقم الأصغر = الخيط الأكبر</strong><br>
+  Example: <strong>1-0</strong> is larger than <strong>6-0</strong> &nbsp;—&nbsp; مثال: 1-0 أكبر من 6-0.
+</div>
+
+<h3>Timing of Suture Removal &nbsp;—&nbsp; مواعيد إزالة الغرز</h3>
+<table>
+  <thead><tr><th>Location — المكان</th><th>Days — الأيام</th></tr></thead>
+  <tbody>
+    <tr><td>Face / الوجه</td><td>3 – 5</td></tr>
+    <tr><td>Eyebrow, Nose, Lip / الحاجب، الأنف، الشفة</td><td>3 – 5</td></tr>
+    <tr><td>Scalp / فروة الرأس</td><td>7 – 10</td></tr>
+    <tr><td>Arms / الذراعين</td><td>7 – 10</td></tr>
+    <tr><td>Chest &amp; abdomen / الصدر والبطن</td><td>8 – 10</td></tr>
+    <tr><td>Torso / الجذع</td><td>10 – 14</td></tr>
+    <tr><td>Legs / الساقين</td><td>10 – 14</td></tr>
+    <tr><td>Hands/feet (back) / ظهر اليدين والقدمين</td><td>10 – 14</td></tr>
+    <tr><td>Palms or soles / الراحة والأخمص</td><td>14 – 21</td></tr>
+    <tr><td>Diabetic / corticosteroid patients / مرضى السكر والكورتيزون</td><td>14 – 21</td></tr>
+  </tbody>
+</table>
+
+<h3>Principles of Suture Removal &nbsp;—&nbsp; مبادئ إزالة الغرز</h3>
+<ol>
+  <li>Use <strong>sterile forceps + suture scissors</strong> — استخدم ملقط معقم ومقص غرز</li>
+  <li><strong>Cut at skin level</strong> — اقطع عند مستوى الجلد</li>
+  <li><strong>Pull gently and smoothly</strong> — اسحب برفق وسلاسة</li>
+  <li><strong>Don't pull contaminated suture through skin</strong> — لا تسحب غرزة ملوثة عبر الجلد</li>
+  <li><strong>Support at exit point</strong> — ادعم نقطة الخروج</li>
+  <li><strong>Remove knots first</strong> — أزل العقد أولاً</li>
+  <li><strong>Pull at 45-degree angle</strong> — اسحب بزاوية 45 درجة</li>
+</ol>
+
+<h3>Equipment &nbsp;—&nbsp; الأدوات</h3>
+<ul>
+  <li>Sterile suture removal set (forceps + scissors) — طقم معقم (ملقط + مقص)</li>
+  <li>Disposable waterproof biohazard bag — كيس نفايات طبية</li>
+  <li>Sterile antiseptic swabs — مسحات مطهرة معقمة</li>
+  <li>Gauze pads — شاش</li>
+  <li>Steri-Strips or butterfly tape — شرائط فراشة</li>
+  <li>Clean gloves — قفازات نظيفة</li>
+</ul>
+
+<h3>Procedure &nbsp;—&nbsp; الخطوات</h3>
+<table class="steps">
+  <thead><tr><th>#</th><th>Action — الإجراء</th><th>Rationale — السبب</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Confirm physician's order — تأكد من أمر الطبيب</td><td>Safety — للسلامة</td></tr>
+    <tr><td>2</td><td>Assess pain, give analgesic 30 min before — قيّم الألم وأعطِ مسكن قبل 30 دقيقة</td><td>Allow time for absorption — ليتم الامتصاص</td></tr>
+    <tr><td>3</td><td>Prepare equipment — جهز الأدوات</td><td>Organization — للتنظيم</td></tr>
+    <tr><td>4</td><td>Explain procedure — اشرح الإجراء</td><td>Decrease anxiety — يقلل القلق</td></tr>
+    <tr><td>5</td><td>Keep privacy — حافظ على الخصوصية</td><td>—</td></tr>
+    <tr><td>6</td><td>Place waterproof pad, position patient — ضع فوطة مقاومة وضع المريض في وضع مريح</td><td>Decreases contamination — يقلل التلوث</td></tr>
+    <tr><td>7</td><td>Wash hands, wear disposable gloves — اغسل يديك والبس قفازات</td><td>Prevents microorganisms — يمنع الميكروبات</td></tr>
+    <tr><td>8</td><td>Remove old dressing, clean with antiseptic (side to side, new swab each swipe) — أزل الضمادة القديمة ونظف بمطهر</td><td>Decrease infection risk — يقلل خطر العدوى</td></tr>
+    <tr><td>9</td><td>Assess wound (appearance, color, pus) — افحص الجرح</td><td>Confirms healing — يؤكد الشفاء</td></tr>
+    <tr><td>10</td><td>Don sterile gloves — البس قفازات معقمة</td><td>Prevent infection — يمنع العدوى</td></tr>
+    <tr><td>11</td><td>Open sterile packages — افتح الأطقم المعقمة</td><td>Organized procedure — إجراء منظم</td></tr>
+    <tr><td>12</td><td><strong>Remove interrupted sutures</strong>: place gauze, scissors in dominant hand, forceps in non-dominant — ضع الشاش، المقص في اليد المسيطرة، الملقط في الأخرى</td><td>Receptacle for sutures — لوضع الغرز</td></tr>
+    <tr><td>13</td><td><strong>Grasp suture at knot with forceps</strong> — أمسك الغرزة عند العقدة بالملقط</td><td>—</td></tr>
+    <tr><td>14</td><td><strong>Gently pull knot, slip scissor tip under knot near skin</strong> — اسحب العقدة برفق وضع طرف المقص تحتها قرب الجلد</td><td>To release suture — لتحرير الغرزة</td></tr>
+    <tr><td>15</td><td>Cut suture close to skin — اقطع الغرزة قريب من الجلد</td><td>—</td></tr>
+    <tr><td>16</td><td><strong>Pull suture out smoothly in one piece</strong> — اسحب الغرزة كاملة بسلاسة</td><td>Smooth removal without tension — إزالة بدون شد</td></tr>
+    <tr><td>17</td><td>Discard onto sterile gauze — ارمها على شاش معقم</td><td>Avoid contamination — منع التلوث</td></tr>
+    <tr><td>18</td><td><strong>Remove alternate sutures first</strong> (3rd, 5th, 7th...) — أزل الغرز بالتناوب (الثالثة، الخامسة، السابعة...)</td><td>Prevents dehiscence — يمنع انفتاح الجرح</td></tr>
+    <tr><td>19</td><td>If no dehiscence → remove rest. If little dehiscence → apply butterfly tape. If large dehiscence → cover with sterile gauze and <strong>report to physician immediately</strong> — لو الجرح متماسك أكمل، لو فيه فتح بسيط ضع شريط فراشة، لو الفتح كبير غطِ وأبلغ الطبيب فوراً</td><td>Prevents wound exposure — يمنع تعرض الجرح</td></tr>
+    <tr><td>20</td><td>Clean again with antiseptic — نظف مرة أخرى بمطهر</td><td>Prophylactic — وقائي</td></tr>
+    <tr><td>21</td><td>Apply Steri-Strips if separation &gt; 2 stitches — ضع شرائط ستيري لو الفتح أكبر من غرزتين</td><td>Distributes tension — يوزع الشد</td></tr>
+    <tr><td>22</td><td>Apply sterile dressing — ضع ضمادة معقمة</td><td>Protection from microorganisms — حماية من الميكروبات</td></tr>
+    <tr><td>23</td><td>Remove gloves, wash hands — اخلع القفازات واغسل يديك</td><td>—</td></tr>
+    <tr><td>24</td><td>Instruct patient on follow-up care — علم المريض المتابعة</td><td>Early detection of problems — الاكتشاف المبكر</td></tr>
+    <tr><td>25</td><td>Document — وثق</td><td>For evaluation — للتقييم</td></tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <span class="callout-title">Important — مهم</span>
+  <strong>Dehiscence</strong> = انفتاح الجرح.<br>
+  If large dehiscence happens → <strong>Cover and call doctor immediately!</strong><br>
+  لو حدث انفتاح كبير → <strong>غطِ واتصل بالطبيب فوراً!</strong>
+</div>
+
+<!-- ============== 3) IV THERAPY ============== -->
+<h1 class="section">3) IV Therapy &nbsp;|&nbsp; العلاج الوريدي</h1>
+
+<h3>Definition &nbsp;—&nbsp; التعريف</h3>
+<div class="info">
+  An effective method of supplying fluids <strong>directly into the vein</strong>, producing rapid effect.<br>
+  طريقة فعالة لتوصيل السوائل <strong>مباشرة في الوريد</strong>، تعطي تأثير سريع.
+</div>
+
+<h3>Indications &nbsp;—&nbsp; الاستخدامات</h3>
+<ul>
+  <li><strong>Provide fluids &amp; electrolytes</strong> — توفير السوائل والأملاح</li>
+  <li><strong>Administer medications</strong> — إعطاء الأدوية</li>
+  <li><strong>Administer blood &amp; blood products</strong> — إعطاء الدم ومشتقاته</li>
+  <li><strong>Keep vein open</strong> — إبقاء الوريد مفتوح للوصول السريع</li>
+  <li><strong>Maintain urine output</strong> — الحفاظ على إخراج البول</li>
+</ul>
+
+<h3>Vein Puncture Sites &nbsp;—&nbsp; أماكن الوريد</h3>
+<ul>
+  <li><strong>Basilic &amp; Cephalic veins</strong> in antecubital space — الأوردة في ثنية الذراع (الأكثر شيوعاً)</li>
+  <li><strong>Hand veins</strong>: Dorsal Venous network, Dorsal Metacarpal — أوردة اليد</li>
+  <li><strong>Median cubital vein</strong> — الوريد المتوسط</li>
+  <li><strong>Ulnar Vein, Radial Vein</strong> — الوريد الزندي والكعبري</li>
+</ul>
+
+<div class="two-col">
+  <div class="card">
+    <h4>Vein Should Be — مواصفات الوريد المناسب</h4>
+    <ul>
+      <li>Large — كبير</li>
+      <li>Visible — واضح</li>
+      <li>Straight — مستقيم</li>
+      <li>Superficial — سطحي</li>
+      <li>Palpable — ملموس</li>
+      <li>Strong — قوي</li>
+      <li>In non-dominant arm — في الذراع غير المسيطرة</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Veins to AVOID — الأوردة الواجب تجنبها</h4>
+    <ul>
+      <li>Mastectomy / dialysis graft / paralysis side</li>
+      <li>Sites distal to previous puncture</li>
+      <li>Hardened, infiltrated, bruised areas</li>
+      <li>Thrombosis / fibroid</li>
+      <li>Inflamed</li>
+      <li>Thin / fragile / mobile</li>
+      <li>Near bony prominences</li>
+      <li>Infection, edema, phlebitis</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Cannula Color Codes &nbsp;—&nbsp; ألوان الكانيولا (مهم جداً للامتحان!)</h3>
+<table>
+  <thead><tr><th>Color — اللون</th><th>Gauge — المقاس</th><th>Flow Rate — السرعة</th></tr></thead>
+  <tbody>
+    <tr><td><span class="swatch" style="background:#f97316"></span> Orange / برتقالي</td><td>14G</td><td>270 mL/min</td></tr>
+    <tr><td><span class="swatch" style="background:#9ca3af"></span> Grey / رمادي</td><td>16G</td><td>180 mL/min</td></tr>
+    <tr><td><span class="swatch" style="background:#f8fafc"></span> White / أبيض</td><td>17G</td><td>125 mL/min</td></tr>
+    <tr><td><span class="swatch" style="background:#16a34a"></span> Green / أخضر</td><td>18G</td><td>80 mL/min</td></tr>
+    <tr><td><span class="swatch" style="background:#ec4899"></span> Pink / وردي</td><td>20G</td><td>54 mL/min</td></tr>
+    <tr><td><span class="swatch" style="background:#2563eb"></span> Blue / أزرق</td><td>22G</td><td>33 mL/min</td></tr>
+    <tr><td><span class="swatch" style="background:#facc15"></span> Yellow / أصفر</td><td>24G</td><td>20 mL/min</td></tr>
+    <tr><td><span class="swatch" style="background:#7c3aed"></span> Violet / بنفسجي</td><td>26G</td><td>19 mL/min</td></tr>
+  </tbody>
+</table>
+
+<div class="tip">
+  <strong>Remember:</strong> Smaller gauge number = Larger cannula = Faster flow.<br>
+  <strong>تذكر:</strong> الرقم الأصغر = كانيولا أكبر = تدفق أسرع.
+</div>
+
+<h3>Equipment &nbsp;—&nbsp; الأدوات</h3>
+<ul>
+  <li>IV infusion tray (tourniquet, alcohol swab, tape) — صينية تحتوي على رباط ضاغط، مسحة كحول، شريط لاصق</li>
+  <li>Extension tubing &amp; stand — أنبوبة وحامل</li>
+  <li>IV catheter (cannula) — كانيولا</li>
+  <li>Prescribed fluid — السائل الموصوف</li>
+  <li>Saline syringe — حقنة محلول ملحي</li>
+  <li>Clean gloves — قفازات نظيفة</li>
+  <li>Sterile gauze or transparent dressing — شاش معقم أو ضمادة شفافة</li>
+</ul>
+
+<h3>Procedure &nbsp;—&nbsp; الخطوات</h3>
+<table class="steps">
+  <thead><tr><th>#</th><th>Step — الخطوة</th><th>Rationale — السبب</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Review physician's orders — راجع أوامر الطبيب</td><td>Safe administration — لإعطاء آمن</td></tr>
+    <tr><td>2</td><td>Assess clinical factors (edema, dry skin, turgor) — قيّم الحالة</td><td>Baseline assessment — تقييم أساسي</td></tr>
+    <tr><td>3</td><td>Prepare equipment, check fluid (5 rights, color, expiry) — جهز الأدوات وافحص السائل</td><td>Reduce risk for error — يقلل الأخطاء</td></tr>
+    <tr><td>4</td><td>Prepare environment (lighting, privacy) — جهز البيئة</td><td>Privacy — الخصوصية</td></tr>
+    <tr><td>5</td><td>Hand washing, wear gloves — اغسل يديك والبس قفازات</td><td>Reduce infection — يقلل العدوى</td></tr>
+    <tr><td>6</td><td>Verify patient identity (2 identifiers) — تأكد من هوية المريض</td><td>Patient safety — سلامة المريض</td></tr>
+    <tr><td>7</td><td>Introduce yourself, explain procedure — عرّف نفسك واشرح</td><td>Reduce anxiety — يقلل القلق</td></tr>
+    <tr><td>8</td><td>Comfortable position — وضع مريح</td><td>Comfort — الراحة</td></tr>
+    <tr><td>9</td><td>Ask patient to <strong>open and close fist</strong> — اطلب من المريض فتح وقفل اليد</td><td>To distend vein — لتمدد الوريد</td></tr>
+    <tr><td>10</td><td>Inspect both arms, palpate vein — افحص الذراعين</td><td>Find suitable vein — إيجاد وريد مناسب</td></tr>
+    <tr><td>11</td><td><strong>Apply tourniquet 10–15 cm above site</strong> — ضع الرباط الضاغط 10–15 سم فوق المكان</td><td>Distends veins — يمدد الأوردة</td></tr>
+    <tr><td>12</td><td>Select site, palpate, promote distention — اختر المكان</td><td>—</td></tr>
+    <tr><td>13</td><td><strong>Cleanse with alcohol swab in circular motion</strong> (center → outward) — نظف بمسحة كحول بحركة دائرية من الداخل للخارج</td><td>Remove microorganisms — إزالة الميكروبات</td></tr>
+    <tr><td>14</td><td><strong>Insert cannula bevel up at 30° angle, lower to 10° when flashback occurs</strong> — أدخل الكانيولا بالحافة لأعلى بزاوية 30° ثم اخفض لـ 10° عند ظهور الدم</td><td>Smooth entry — دخول سلس</td></tr>
+    <tr><td>15</td><td>Watch for blood return (flashback) — راقب رجوع الدم</td><td>Confirms vein placement — يؤكد الدخول للوريد</td></tr>
+    <tr><td>16</td><td>Stabilize cannula, <strong>release tourniquet</strong> — ثبت الكانيولا وحرر الرباط</td><td>Confirm placement — تأكيد المكان</td></tr>
+    <tr><td>17</td><td>Thread plastic catheter into vein — أدخل الكانيولا في الوريد</td><td>Decreases vein rupture — يقلل تمزق الوريد</td></tr>
+    <tr><td>18</td><td>Apply pressure, remove guide needle, attach tubing — اضغط، اسحب الإبرة، وصل الأنبوبة</td><td>Prevents dislodging — يمنع الخلع</td></tr>
+    <tr><td>19</td><td>Ask patient to <strong>relax hand</strong> — اطلب من المريض إرخاء يده</td><td>—</td></tr>
+    <tr><td>20</td><td>Secure &amp; dress site with tape — ثبت المكان بشريط لاصق</td><td>Maintain catheter — للتثبيت</td></tr>
+    <tr><td>21</td><td><strong>Flush cannula with saline</strong> — اشطف الكانيولا بمحلول ملحي</td><td>Check patency — للتأكد من الفتح</td></tr>
+    <tr><td>22</td><td>Label site and tubing — ضع ملصق على المكان والأنبوبة</td><td>Reminder to change — للتذكير بالتغيير</td></tr>
+    <tr><td>23</td><td>Open valve, connect IV, adjust flow rate — افتح الصمام واضبط السرعة</td><td>Provide therapy — للعلاج</td></tr>
+    <tr><td>24</td><td>Discard equipment, remove gloves, wash hands — ارمِ الأدوات</td><td>—</td></tr>
+    <tr><td>25</td><td><strong>Document</strong>: date, time, site, cannula size, fluid type, flow rate, problems — وثق التاريخ، الوقت، المكان، المقاس، نوع السائل، السرعة، المشاكل</td><td>—</td></tr>
+  </tbody>
+</table>
+
+<div class="tip">
+  <span class="callout-title">Insertion Angle Tip</span>
+  Start at <strong>30°</strong> → when you see blood (flashback) → drop to <strong>10°</strong>.<br>
+  ابدأ بزاوية <strong>30°</strong> → لما تشوف الدم → اخفض لـ <strong>10°</strong>.
+</div>
+
+<!-- ============== 4) CHEST PHYSIOTHERAPY ============== -->
+<h1 class="section">4) Chest Physiotherapy &nbsp;|&nbsp; العلاج التنفسي</h1>
+
+<h3>Definition &nbsp;—&nbsp; التعريف</h3>
+<div class="info">
+  Group of airway clearance techniques to <strong>mobilize lung secretions</strong> and improve breathing.<br>
+  مجموعة تقنيات لـ <strong>تحريك إفرازات الرئة</strong> وتحسين التنفس.
+</div>
+
+<h3>Purposes &nbsp;—&nbsp; الأهداف</h3>
+<ol>
+  <li><strong>Reduce airway obstruction</strong> — تقليل انسداد المجرى التنفسي</li>
+  <li><strong>Reduce infection severity</strong> — تقليل شدة العدوى</li>
+  <li><strong>Maintain optimal respiratory function</strong> — الحفاظ على وظيفة التنفس</li>
+</ol>
+
+<div class="two-col">
+  <div class="card">
+    <h4>Indications — الاستخدامات</h4>
+    <ul>
+      <li>Bronchitis, Asthma, Pneumonia — التهاب شعب، ربو، التهاب رئوي</li>
+      <li>Bronchiectasis, Atelectasis — توسع شعب، انخماص رئة</li>
+      <li>Mucous plugs / Lobular collapse — سدادات مخاطية / انخماص فص</li>
+      <li>Post-operative patients — مرضى ما بعد الجراحة</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Contraindications — موانع الاستخدام</h4>
+    <ul>
+      <li>Increased ICP — ارتفاع ضغط داخل المخ</li>
+      <li>Unstable head/neck injury — إصابة رأس/رقبة غير مستقرة</li>
+      <li>Active hemorrhage / hemoptysis — نزيف نشط / نفث دم</li>
+      <li>Recent spinal injury — إصابة عمود فقري حديثة</li>
+      <li>Empyema — صديد بالرئة</li>
+      <li>Bronchopleural fistula — ناسور</li>
+      <li>Rib fracture / Flail chest — كسر ضلع / صدر متخلخل</li>
+      <li>Vertebral fractures / osteoporosis — كسور فقرية / هشاشة عظام</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Four Techniques &nbsp;—&nbsp; أربع تقنيات</h3>
+
+<h4>1) Chest Percussion — النقر على الصدر</h4>
+<p>
+  Rhythmically striking chest with <strong>cupped hands</strong> to break secretions.<br>
+  ضرب الصدر بإيقاع باليدين على شكل <strong>كوب</strong> لكسر الإفرازات.
+</p>
+<ul>
+  <li>Cupped hand position — وضعية اليد مقعرة</li>
+  <li>Tap rib cage over affected area — اضرب القفص الصدري فوق المنطقة المصابة</li>
+  <li>Smooth rhythm, 1–2 minutes — إيقاع سلس، 1–2 دقيقة</li>
+  <li><strong>AVOID spinal column and kidneys</strong> — تجنب العمود الفقري والكلى</li>
+</ul>
+
+<h4>2) Chest Vibration — الاهتزاز</h4>
+<p>
+  Fine tremorous action <strong>during expiration</strong>.<br>
+  اهتزاز خفيف <strong>أثناء الزفير</strong>.
+</p>
+<ul>
+  <li>Performed during <strong>deep breathing</strong> — أثناء التنفس العميق</li>
+  <li>Hands against chest — اليدان على الصدر</li>
+  <li>Quick contracting/relaxing of arm muscles <strong>during exhalation</strong> — تقلص واسترخاء سريع أثناء الزفير</li>
+  <li>Repeat 6–8 trials — كرر 6–8 مرات</li>
+  <li>Finish with huffing/coughing — انتهِ بالكحة</li>
+</ul>
+
+<h4>3) Postural Drainage — التصريف الوضعي</h4>
+<p>
+  Various positions to facilitate <strong>flow of secretions</strong> by gravity.<br>
+  أوضاع مختلفة لتسهيل <strong>تدفق الإفرازات</strong> بالجاذبية.
+</p>
+<p><strong>Lung anatomy:</strong></p>
+<ul>
+  <li><strong>Right lung</strong> = 3 lobes (upper, middle, lower) — الرئة اليمنى 3 فصوص</li>
+  <li><strong>Left lung</strong> = 2 lobes (upper, lower) — الرئة اليسرى فصان</li>
+</ul>
+
+<table class="steps">
+  <thead><tr><th>#</th><th>Step — الخطوة</th><th>Rationale — السبب</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Explain procedure — اشرح</td><td>Cooperation — التعاون</td></tr>
+    <tr><td>2</td><td>Cover patient, expose chest — غطِ واكشف الصدر</td><td>Privacy — الخصوصية</td></tr>
+    <tr><td>3</td><td>Wash hands, wear PPE — اغسل والبس وقاية</td><td>Reduce microorganisms — تقليل الميكروبات</td></tr>
+    <tr><td>4</td><td>Close windows/doors — أغلق النوافذ</td><td>Avoid air streams — تجنب التيارات</td></tr>
+    <tr><td>5</td><td>Auscultate before &amp; after — اسمع قبل وبعد</td><td>Determine effectiveness — تحديد الفعالية</td></tr>
+    <tr><td>6</td><td>Bronchodilator/saline nebulized before — موسعات شعب قبل</td><td>Decrease mucus thickness — تقليل سماكة المخاط</td></tr>
+    <tr><td>7</td><td><strong>2–4 times daily before meals &amp; bedtime</strong> — 2–4 مرات يومياً قبل الوجبات والنوم</td><td>Avoid nausea/vomiting — تجنب الغثيان</td></tr>
+    <tr><td>8</td><td>Each position 5–10 min — كل وضعية 5–10 دقائق</td><td>—</td></tr>
+    <tr><td>9</td><td>Breathe in through nose, out through pursed lips — شهيق من الأنف، زفير بشفايف مزمومة</td><td>—</td></tr>
+    <tr><td>10</td><td>Cough twice during exhalation — اكح مرتين مع الزفير</td><td>Remove secretions — لإخراج الإفرازات</td></tr>
+    <tr><td>11</td><td>Mouth care after — نظافة الفم بعد</td><td>—</td></tr>
+    <tr><td>12</td><td>Document amount, color, viscosity — وثق الكمية واللون</td><td>—</td></tr>
+  </tbody>
+</table>
+
+<h4>4) Deep Breathing Exercise — تمارين التنفس العميق</h4>
+<ol>
+  <li><strong>Sit or stand</strong>, pull elbows back, <strong>inhale deeply</strong> — اجلس أو قف واسحب الكوعين للخلف وخذ نفس عميق</li>
+  <li><strong>Hold breath for 5 counts</strong> — احبس النفس 5 ثواني</li>
+  <li><strong>Exhale slowly and completely</strong> — ازفر ببطء وبالكامل</li>
+</ol>
+
+<!-- ============== 5) NGT ============== -->
+<h1 class="section">5) NGT Insertion &amp; Care &nbsp;|&nbsp; تركيب أنبوبة المعدة الأنفية</h1>
+
+<h3>Definition &nbsp;—&nbsp; التعريف</h3>
+<div class="info">
+  NG tubes are inserted through the <strong>nose → posterior oropharynx → esophagus → stomach</strong>.<br>
+  أنابيب تدخل من <strong>الأنف → البلعوم → المريء → المعدة</strong>.
+</div>
+
+<h3>Indications &nbsp;—&nbsp; الاستخدامات</h3>
+<ul>
+  <li><strong>Gastric decompression</strong> — تفريغ المعدة (انسداد، علوص، ركود)</li>
+  <li><strong>Small bowel obstruction relief</strong> — تخفيف انسداد الأمعاء</li>
+  <li><strong>Aspiration of toxic material</strong> — شفط مواد سامة</li>
+  <li><strong>Medication administration</strong> — إعطاء أدوية</li>
+  <li><strong>Feeding</strong> — التغذية</li>
+  <li><strong>Bowel irrigation</strong> — غسيل الأمعاء</li>
+  <li><strong>Removal of blood/clots in GI bleeding</strong> — إزالة الدم في النزيف</li>
+  <li><strong>Activated charcoal administration</strong> — إعطاء فحم منشط</li>
+  <li><strong>Diagnostic</strong>: contrast agents, gastric content sample — تشخيصي: صبغات، عينة محتوى معدة</li>
+</ul>
+
+<h3>Contraindications &nbsp;—&nbsp; موانع الاستخدام</h3>
+<div class="two-col">
+  <div class="card">
+    <h4>Absolute — مطلقة</h4>
+    <ul>
+      <li>Mid face trauma — إصابة منتصف الوجه</li>
+      <li>Recent nasal surgery — جراحة أنف حديثة</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Relative — نسبية</h4>
+    <ul>
+      <li>Coagulation abnormalities — اضطرابات تجلط</li>
+      <li>Recent alkaline ingestion — ابتلاع قلوي حديث (خطر تمزق المريء)</li>
+      <li>Esophageal varices — دوالي المريء</li>
+      <li>Esophageal strictures — ضيق المريء</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Complications &nbsp;—&nbsp; المضاعفات</h3>
+<ul>
+  <li>Gagging or vomiting — تهوع أو قيء</li>
+  <li>Nasopharyngeal trauma/hemorrhage — إصابة/نزيف بلعومي</li>
+  <li>Sinusitis, sore throat — التهاب جيوب، التهاب حلق</li>
+  <li><strong>Pulmonary aspiration</strong> — شفط رئوي (خطير)</li>
+  <li>Esophageal/gastric perforation — ثقب مريء أو معدة</li>
+</ul>
+
+<h3>Equipment &nbsp;—&nbsp; الأدوات</h3>
+<ul>
+  <li>Nasogastric tube (fine bore) — أنبوبة دقيقة</li>
+  <li>Disposable gloves — قفازات</li>
+  <li><strong>Lubricant + gauze</strong> — مزلق وشاش</li>
+  <li>Disposable bowl (for vomiting) — وعاء للقيء</li>
+  <li>Paper towels — مناديل ورقية</li>
+  <li><strong>Large syringe</strong> (for aspirate) — حقنة كبيرة للسحب</li>
+  <li><strong>pH testing strips</strong> — شرائط فحص الحموضة</li>
+  <li>Dressing/tape — شريط لاصق</li>
+  <li>Glass of water — كوب ماء (إذا البلع آمن)</li>
+</ul>
+
+<h3>Procedure &nbsp;—&nbsp; الخطوات</h3>
+<table class="steps">
+  <thead><tr><th>#</th><th>Step — الخطوة</th><th>Rationale — السبب</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Check doctor's orders (suction or drainage?) — راجع الأمر الطبي</td><td>Safety — السلامة</td></tr>
+    <tr><td>2</td><td><strong>Explain procedure, agree on a pause signal</strong> — اشرح واتفق على إشارة الإيقاف</td><td>Reduces anxiety — يقلل القلق</td></tr>
+    <tr><td>3</td><td>Hand hygiene + gather supplies — اغسل يديك وجهز</td><td>Prevent microorganisms</td></tr>
+    <tr><td>4</td><td><strong>Patient assessment</strong>: nasal cavity, best nostril (occlude one, breathe other), septum history, palpate abdomen, bowel sounds, level of consciousness — افحص الأنف، اختر الأفضل، تاريخ الحاجز، البطن</td><td>Document findings</td></tr>
+    <tr><td>5</td><td><strong>Position patient at 45–90°</strong>, pillow under head, raise bed, stand on patient's right (if right-handed) — ضع المريض جالس بزاوية 45–90 درجة</td><td>Allows easy passage — سهولة المرور</td></tr>
+    <tr><td>6</td><td>Place towel on chest, provide tissues + emesis basin — ضع فوطة وقدم مناديل ووعاء</td><td>For secretions/vomiting</td></tr>
+    <tr><td>7</td><td>Apply clean gloves — البس قفازات</td><td>Decreases microorganisms</td></tr>
+    <tr><td>8</td><td><strong>MEASUREMENT</strong>: Measure from <strong>tip of nose → earlobe → xiphoid process</strong> and mark — قس من طرف الأنف للأذن للقص الصدري وعلّم</td><td>Correct length — الطول الصحيح</td></tr>
+    <tr><td>9</td><td>Lubricate tube tip — زلق طرف الأنبوبة</td><td>Easier insertion</td></tr>
+    <tr><td>10</td><td>Curve 10–15 cm of tube around finger — لف 10–15 سم من الأنبوبة حول الإصبع</td><td>Conforms to nasopharynx curve — ليتوافق مع انحناء البلعوم</td></tr>
+    <tr><td>11</td><td><strong>Hyperflex patient's head</strong>, breathe through mouth — اخفض رأس المريض للأمام وتنفس من الفم</td><td>Closes trachea, opens esophagus — يغلق القصبة ويفتح المريء</td></tr>
+    <tr><td>12</td><td>If resistance: twist tube, ask patient to <strong>sip water</strong> through straw, or dry swallow. If significant resistance → remove and try other nostril — لو في مقاومة: لف الأنبوبة، اطلب رشفة ماء، أو بلع جاف</td><td>If continues to gag → check tube isn't coiled in mouth</td></tr>
+    <tr><td>13</td><td>Continue advancing until reaching the mark — استمر حتى تصل للعلامة</td><td>Accurate placement</td></tr>
+    <tr><td>14</td><td><strong>Temporarily anchor tube to cheek</strong> with tape — ثبت مؤقتاً بالخد</td><td>Prevent displacement</td></tr>
+    <tr><td>15</td><td><strong>VERIFY PLACEMENT</strong>: pH paper — <strong>acidic pH &lt; 5</strong> — استخدم ورق pH (الحموضة أقل من 5). <strong>X-ray confirms</strong> before feeding — الأشعة تؤكد قبل التغذية</td><td>If pH &gt; 6 → may be respiratory or small bowel → REMOVE — لو الحموضة أكبر من 6 ممكن يكون في الرئة → اخلعها</td></tr>
+    <tr><td>16</td><td>Mark length with permanent marker, record — علم بقلم دائم وسجل الطول</td><td>Identify migration — لمعرفة لو تحركت</td></tr>
+    <tr><td>17</td><td>Secure tube to gown — ثبت الأنبوبة بالقميص</td><td>Keeps NG in place</td></tr>
+    <tr><td>18</td><td>Document procedure, report unexpected findings — وثق وأبلغ عن أي شيء غريب</td><td>Patient safety</td></tr>
+  </tbody>
+</table>
+
+<h3>Special Considerations &nbsp;—&nbsp; ملاحظات خاصة</h3>
+<ol>
+  <li><strong>Always assess placement before infusing anything</strong> — دائماً تأكد من المكان قبل أي إعطاء.</li>
+  <li><strong>DO NOT instill air to test location</strong> — لا تضخ هواء لاختبار المكان (طريقة قديمة وغير آمنة).</li>
+  <li><strong>Don't give food/drink without swallowing assessment</strong> — لا تعطِ طعام بدون تقييم البلع.</li>
+  <li>When changing gown → <strong>unpin and re-pin tube</strong> — لما تغير القميص فك الأنبوبة وثبتها مرة أخرى.</li>
+</ol>
+
+<div class="tip">
+  <span class="callout-title">Golden Tip — نصيحة ذهبية</span>
+  The 3 measurement points — <strong>NEX</strong>:<br>
+  <strong>N</strong>ose tip — طرف الأنف &nbsp;•&nbsp;
+  <strong>E</strong>arlobe — شحمة الأذن &nbsp;•&nbsp;
+  <strong>X</strong>iphoid process — الناتئ الخنجري (قص الصدر)
+</div>
+
+<!-- ============== 6) QUICK REVIEW ============== -->
+<h1 class="section">6) Quick Review &nbsp;|&nbsp; مراجعة سريعة للامتحان</h1>
+
+<h3>Wound Care — العناية بالجروح</h3>
+<div class="qa">
+  <div class="q">Q: How do you clean a wound? — إزاي تنظف جرح؟</div>
+  <div class="a">A: From <strong>center to outer area</strong>, new swab each stroke — من المنتصف للخارج، شاش جديد كل مرة.</div>
+</div>
+
+<h3>Suture Removal — إزالة الغرز</h3>
+<div class="qa">
+  <div class="q">Q: When do you remove face sutures? — إمتى تشيل غرز الوجه؟</div>
+  <div class="a">A: <strong>3–5 days</strong> — من 3–5 أيام.</div>
+</div>
+<div class="qa">
+  <div class="q">Q: Which sutures do you remove first? — أي غرز تشيل الأول؟</div>
+  <div class="a">A: <strong>Alternate ones</strong> (3rd, 5th, 7th) — الغرز بالتناوب.</div>
+</div>
+
+<h3>IV Therapy — الوريدي</h3>
+<div class="qa">
+  <div class="q">Q: What angle for IV insertion? — إيه زاوية الإدخال؟</div>
+  <div class="a">A: <strong>30°</strong>, drop to <strong>10°</strong> after flashback — 30 درجة ثم 10 درجة.</div>
+</div>
+<div class="qa">
+  <div class="q">Q: Tourniquet placement? — مكان الرباط؟</div>
+  <div class="a">A: <strong>10–15 cm above</strong> the site — 10–15 سم فوق المكان.</div>
+</div>
+<div class="qa">
+  <div class="q">Q: Largest cannula color? — أكبر لون كانيولا؟</div>
+  <div class="a">A: <strong>Orange (14G)</strong> — البرتقالي.</div>
+</div>
+
+<h3>Chest Physiotherapy — العلاج التنفسي</h3>
+<div class="qa">
+  <div class="q">Q: When to do postural drainage? — إمتى نعمل تصريف وضعي؟</div>
+  <div class="a">A: <strong>Before meals &amp; bedtime, 2–4 times daily</strong> — قبل الأكل والنوم.</div>
+</div>
+<div class="qa">
+  <div class="q">Q: Hand position for percussion? — شكل اليد للنقر؟</div>
+  <div class="a">A: <strong>Cupped</strong> — مقعرة (شكل كوب).</div>
+</div>
+
+<h3>NGT — أنبوبة المعدة</h3>
+<div class="qa">
+  <div class="q">Q: How to measure NG tube? — إزاي نقيس؟</div>
+  <div class="a">A: <strong>Nose → Earlobe → Xiphoid</strong> (NEX).</div>
+</div>
+<div class="qa">
+  <div class="q">Q: pH for correct placement? — الحموضة الصحيحة؟</div>
+  <div class="a">A: <strong>pH &lt; 5</strong> (acidic) — أقل من 5 (حمضي).</div>
+</div>
+<div class="qa">
+  <div class="q">Q: Gold standard for placement confirmation? — أفضل طريقة للتأكد؟</div>
+  <div class="a">A: <strong>X-ray</strong> — الأشعة.</div>
+</div>
+
+<!-- ============== 7) FINAL TIPS ============== -->
+<h1 class="section">7) Final Tips for Exam &nbsp;|&nbsp; نصائح أخيرة للامتحان</h1>
+
+<ol>
+  <li><strong>Read questions carefully</strong> — اقرأ الأسئلة بتركيز.</li>
+  <li><strong>Pay attention to numbers</strong> (angles, days, pH) — ركز على الأرقام.</li>
+  <li><strong>Memorize cannula colors</strong> — احفظ ألوان الكانيولا.</li>
+  <li><strong>Memorize suture removal timing</strong> — احفظ مواعيد إزالة الغرز.</li>
+  <li><strong>Always</strong>: Hand washing → Gloves → Privacy → Explain → Document.<br>
+  <strong>دائماً</strong>: غسل يدين → قفازات → خصوصية → اشرح → وثق.</li>
+</ol>
+
+<div class="info">
+  <span class="callout-title">Remember — تذكر</span>
+  Almost every procedure shares the same core steps:<br>
+  كل إجراء فيه نفس الخطوات الأساسية:
+  <ol style="margin-top:6px;">
+    <li>Check order — راجع الأمر</li>
+    <li>Explain — اشرح</li>
+    <li>Hand wash — اغسل</li>
+    <li>Gloves — قفازات</li>
+    <li>Privacy — خصوصية</li>
+    <li>Document — وثق</li>
+  </ol>
+</div>
+
+<div class="final">
+  <h3>Good luck! &nbsp;—&nbsp; بالتوفيق!</h3>
+  <p style="margin:0;">May your study sessions be as effective as a sterile technique.</p>
+</div>
+
+</div>
+</body>
+</html>
