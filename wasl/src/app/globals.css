@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: #06070a;
+  --color-ink-900: #0a0c12;
+  --color-ink-850: #0e1018;
+  --color-ink-800: #12151f;
+  --color-ink-700: #1a1e2b;
+  --color-ink-600: #262c3d;
+  --color-ink-500: #3a4256;
+  --color-ink-400: #5b6478;
+  --color-ink-300: #8b94a8;
+  --color-ink-200: #b9c0cf;
+  --color-ink-100: #e2e6ef;
+
+  --color-brand-50: #eef2ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+
+  --font-sans: var(--font-inter), var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-arabic), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-mono-code), ui-monospace, "SFMono-Regular", monospace;
+
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-ink-700);
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-ink-100);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html[dir="rtl"] body {
+    font-family: var(--font-arabic);
+  }
+
+  /* Arabic numerals stay latin inside code and metrics for readability. */
+  code,
+  pre,
+  kbd,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    text-align: start;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-brand-500) 40%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-700);
+    border-radius: 999px;
+    border: 2px solid var(--color-ink-950);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-600);
+  }
+}
+
+@utility panel {
+  background-color: color-mix(in srgb, var(--color-ink-900) 88%, transparent);
+  border: 1px solid var(--color-ink-700);
+  border-radius: var(--radius-xl);
+}
+
+@utility surface-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--color-ink-500) 55%, transparent) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* ---------------------------------------------------------------- animations */
+
+@keyframes wasl-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wasl-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-brand-400) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes wasl-dash {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+@keyframes wasl-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-fade-up {
+  animation: wasl-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-pulse-ring {
+  animation: wasl-pulse-ring 1.6s ease-out infinite;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-ink-800);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-ink-600) 45%, transparent),
+    transparent
+  );
+  animation: wasl-shimmer 1.6s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------- react flow */
+
+.react-flow {
+  --xy-background-color: var(--color-ink-950);
+  --xy-edge-stroke: var(--color-ink-500);
+  --xy-edge-stroke-selected: var(--color-brand-400);
+  --xy-handle-background-color: var(--color-ink-300);
+  --xy-handle-border-color: var(--color-ink-900);
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+.react-flow__edge-path {
+  stroke-width: 1.75;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: var(--color-brand-400);
+  stroke-width: 2.25;
+}
+
+.react-flow__edge.wasl-edge-active .react-flow__edge-path {
+  stroke: var(--color-brand-400);
+  stroke-dasharray: 6 6;
+  animation: wasl-dash 0.7s linear infinite;
+}
+
+.react-flow__handle {
+  width: 11px;
+  height: 11px;
+  border-width: 2px;
+  transition:
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.react-flow__handle:hover {
+  background-color: var(--color-brand-400);
+  transform: scale(1.25);
+}
+
+.react-flow__node {
+  /* The canvas itself stays LTR even in Arabic: graphs read left-to-right. */
+  direction: ltr;
+}
+
+.react-flow__controls-button {
+  background-color: var(--color-ink-800);
+  border-color: var(--color-ink-700);
+  color: var(--color-ink-200);
+}
+.react-flow__controls-button:hover {
+  background-color: var(--color-ink-700);
+}
+.react-flow__controls-button svg {
+  fill: currentColor;
+}
+
+.react-flow__minimap {
+  background-color: var(--color-ink-900);
+  border: 1px solid var(--color-ink-700);
+  border-radius: 10px;
+}
