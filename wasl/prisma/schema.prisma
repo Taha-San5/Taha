@@ -12,13 +12,19 @@ datasource db {
 }
 
 model User {
-  id           String  @id @default(cuid())
-  email        String  @unique
-  name         String
-  passwordHash String
-  avatarColor  String  @default("#6366f1")
-  locale       String  @default("ar")
-  isAdmin      Boolean @default(false)
+  id     String @id @default(cuid())
+  email  String @unique
+  name   String
+  // Null for accounts created through an identity provider, which have no
+  // password to verify. Always check before calling bcrypt.compare.
+  passwordHash String?
+  // Google's stable subject id. Kept separate from email so a user changing
+  // their Google display email does not orphan the account.
+  googleId    String? @unique
+  avatarUrl   String?
+  avatarColor String  @default("#6366f1")
+  locale      String  @default("en")
+  isAdmin     Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

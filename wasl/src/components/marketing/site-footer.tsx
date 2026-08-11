@@ -15,6 +15,7 @@ export function SiteFooter() {
         { href: "/templates", label: d.nav.templates },
         { href: "/pricing", label: d.nav.pricing },
         { href: "/docs", label: d.nav.docs },
+        { href: "/about", label: d.about.nav },
       ],
     },
     {
@@ -41,6 +42,11 @@ export function SiteFooter() {
         <div className="space-y-3">
           <Logo />
           <p className="max-w-xs text-[13px] leading-relaxed text-ink-400">{d.brand.tagline}</p>
+          <p className="text-[11.5px] text-ink-600">
+            Wasl <span className="text-ink-700">·</span> <span className="font-arabic">وصل</span>
+            <span className="text-ink-700"> — </span>
+            {locale === "ar" ? "تعني الرابط" : "means “connection”"}
+          </p>
         </div>
 
         {columns.map((column) => (

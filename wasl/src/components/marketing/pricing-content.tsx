@@ -4,8 +4,9 @@ import { useState } from "react";
 
 import { useI18n } from "@/components/i18n-provider";
 import { Icon } from "@/components/icon";
+import { ProviderBadge } from "@/components/provider-logos";
 import { Badge, ButtonLink, Card } from "@/components/ui/kit";
-import { MODELS } from "@/lib/models";
+import { MODELS, PROVIDER_LABELS } from "@/lib/models";
 import { NODE_DEFINITIONS } from "@/lib/nodes/registry";
 import { cn } from "@/lib/utils";
 
@@ -129,19 +130,26 @@ export function PricingContent() {
           </p>
           <div className="mt-4 divide-y divide-ink-800">
             {MODELS.map((model) => (
-              <div key={model.id} className="flex items-center justify-between gap-3 py-2">
-                <div className="min-w-0">
+              <div key={model.id} className="flex items-center gap-3 py-2">
+                <ProviderBadge provider={model.provider} size={28} />
+                <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] text-ink-200">{model.label}</p>
                   <p className="text-[11px] text-ink-500 tabular">
-                    {(model.contextWindow / 1000).toFixed(0)}k context
+                    {PROVIDER_LABELS[model.provider]} · {(model.contextWindow / 1000).toFixed(0)}k context · $
+                    {model.inputPerM}/${model.outputPerM} per 1M
                   </p>
                 </div>
-                <Badge tone={model.credits <= 2 ? "success" : model.credits <= 7 ? "warning" : "danger"}>
+                <Badge tone={model.credits <= 2 ? "success" : model.credits <= 5 ? "warning" : "danger"}>
                   {model.credits} {d.common.credits}
                 </Badge>
               </div>
             ))}
           </div>
+          <p className="mt-3 text-[11px] leading-relaxed text-ink-500">
+            {locale === "ar"
+              ? "الرصيد مشتق من سعر المزوّد: رصيد واحد = ٠٫٠٠٥ دولار من الاستهلاك، محسوباً على نداء نموذجي (٣ آلاف مدخل + ٨٠٠ مخرج)."
+              : "Credits are derived from provider list price: 1 credit = $0.005 of spend, costed against a typical call (3K in + 800 out)."}
+          </p>
         </Card>
 
         <Card>

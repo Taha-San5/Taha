@@ -1,7 +1,7 @@
-# Wasl · وصل
+# Wasl
 
-A visual builder for AI workflows — the Gumloop idea, rebuilt Arabic-first with a
-real execution engine, live per-node traces, and bring-your-own-key pricing.
+A visual builder for AI workflows — the Gumloop idea rebuilt around a real
+execution engine, live per-node traces, and bring-your-own-key pricing.
 
 Drag nodes onto a canvas, wire them together, and ship an automation that reads
 the web, reasons with a model, branches on the result, and takes action.
@@ -18,11 +18,16 @@ Schedule ─▶ Read web page ─▶ Split into list ─┬─▶ Summarise ─�
 npm run dev
 ```
 
-Sign in at <http://localhost:3000/login> with **demo@wasl.app / wasl1234**.
+Then create the first account at <http://localhost:3000/signup>. There is
+deliberately **no shared demo account** — a published password is a standing
+invitation to anyone who finds the URL.
 
-No API key is required. When none is configured, AI nodes fall back to a
-deterministic *simulated* model, clearly badged in the UI, so every template and
-demo still executes end to end.
+No API key is required either. When none is configured, AI nodes fall back to a
+deterministic *simulated* model, clearly badged in the UI, so every template
+still executes end to end.
+
+A fresh workspace starts empty; install any of the 10 templates from
+`/templates` in one click.
 
 ## What is actually built
 
@@ -66,9 +71,13 @@ demo still executes end to end.
 - Natural-language flow generator. With a model key it drafts the graph and
   validates it against the node registry; without one, a keyword planner builds a
   sensible graph so the feature still works offline.
-- Full Arabic/English UI with correct RTL. The canvas itself stays left-to-right
-  in both locales, because graphs read that way. Both dictionaries are
-  shape-checked against each other at compile time.
+- English by default, with a complete Arabic locale and correct RTL behind the
+  language switcher. The canvas itself stays left-to-right in both locales,
+  because graphs read that way. Both dictionaries are shape-checked against each
+  other at compile time, so a missing translation is a build error.
+- Model catalog is current as of August 2026 (GPT-5.6, Claude 5, Gemini 3.x) and
+  credit costs are *derived* from provider list prices rather than hardcoded —
+  `npm run check:models` fails the build if the two drift apart.
 
 ## Architecture
 
@@ -138,7 +147,9 @@ branch skipping, cycle detection and the SSRF guard.
 | `ENCRYPTION_KEY` | yes | 32+ chars, encrypts stored credentials |
 | `OPENAI_API_KEY` | no | omit to use the simulated model |
 | `OPENAI_BASE_URL` | no | any OpenAI-compatible endpoint |
-| `NEXT_PUBLIC_APP_URL` | no | used in generated webhook/API snippets |
+| `APP_URL` | no | Forces the URL used in generated webhook/API snippets. Leave unset and it is derived from the request, so a custom domain needs no rebuild. |
+| `GOOGLE_CLIENT_ID` | no | Enables Google sign-in; the button is hidden when unset |
+| `GOOGLE_CLIENT_SECRET` | no | Required alongside the client id |
 
 To move to Postgres, change `provider` in `prisma/schema.prisma` and point
 `DATABASE_URL` at your database. Every JSON payload is stored as `TEXT`, so the

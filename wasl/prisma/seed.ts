@@ -1,125 +1,83 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
 
 import { TEMPLATES } from "../src/lib/templates/catalog";
 
 const prisma = new PrismaClient();
 
-const DEMO_EMAIL = "demo@wasl.app";
-const DEMO_PASSWORD = "wasl1234";
-
+/**
+ * Seeds the template gallery. Runs on every boot and is idempotent.
+ *
+ * It deliberately creates **no user accounts**. A shared demo account with a
+ * published password is a standing invitation to anyone who finds the URL, so
+ * the first real account is created through /signup instead.
+ */
 async function main() {
   console.log("Seeding Wasl…");
 
-  // ------------------------------------------------------------- demo account
-  const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 11);
+  await removeLegacyDemoAccount();
 
-  const user = await prisma.user.upsert({
-    where: { email: DEMO_EMAIL },
-    update: { passwordHash },
-    create: {
-      email: DEMO_EMAIL,
-      name: "Demo User",
-      passwordHash,
-      avatarColor: "#6366f1",
-      locale: "ar",
-    },
-  });
-
-  let workspace = await prisma.workspace.findUnique({ where: { slug: "demo" } });
-  if (!workspace) {
-    workspace = await prisma.workspace.create({
-      data: {
-        name: "Demo workspace",
-        slug: "demo",
-        plan: "team",
-        creditBalance: 75_000,
-        creditsIncluded: 75_000,
-        ledger: { create: { delta: 75_000, reason: "monthly_reset", balanceAfter: 75_000 } },
-      },
-    });
-  }
-
-  await prisma.membership.upsert({
-    where: { userId_workspaceId: { userId: user.id, workspaceId: workspace.id } },
-    update: {},
-    create: { userId: user.id, workspaceId: workspace.id, role: "owner" },
-  });
-
-  console.log(`  user      ${DEMO_EMAIL} / ${DEMO_PASSWORD}`);
-  console.log(`  workspace ${workspace.name}`);
-
-  // ---------------------------------------------------------------- templates
   for (const template of TEMPLATES) {
+    const fields = {
+      name: template.name,
+      nameAr: template.nameAr,
+      description: template.description,
+      descriptionAr: template.descriptionAr,
+      category: template.category,
+      emoji: template.emoji,
+      featured: template.featured,
+      installs: template.installs,
+      graph: JSON.stringify(template.graph),
+    };
+
     await prisma.template.upsert({
       where: { slug: template.slug },
-      update: {
-        name: template.name,
-        nameAr: template.nameAr,
-        description: template.description,
-        descriptionAr: template.descriptionAr,
-        category: template.category,
-        emoji: template.emoji,
-        featured: template.featured,
-        installs: template.installs,
-        graph: JSON.stringify(template.graph),
-      },
-      create: {
-        slug: template.slug,
-        name: template.name,
-        nameAr: template.nameAr,
-        description: template.description,
-        descriptionAr: template.descriptionAr,
-        category: template.category,
-        emoji: template.emoji,
-        featured: template.featured,
-        installs: template.installs,
-        graph: JSON.stringify(template.graph),
-      },
+      update: fields,
+      create: { slug: template.slug, ...fields },
     });
   }
+
+  // Drop seeded templates that are no longer in the catalog (renamed slugs),
+  // while leaving anything a user authored untouched.
+  const stale = await prisma.template.deleteMany({
+    where: {
+      authorId: null,
+      slug: { notIn: TEMPLATES.map((template) => template.slug) },
+    },
+  });
+  if (stale.count > 0) console.log(`  removed   ${stale.count} stale template(s)`);
+
   console.log(`  templates ${TEMPLATES.length}`);
-
-  // ------------------------------------------- a few starter flows in the demo
-  const starterSlugs = ["page-summary-arabic", "support-ticket-triage", "lead-enrichment"];
-  for (const slug of starterSlugs) {
-    const template = TEMPLATES.find((entry) => entry.slug === slug);
-    if (!template) continue;
-
-    const existing = await prisma.flow.findFirst({
-      where: { workspaceId: workspace.id, name: template.name },
-    });
-    if (existing) continue;
-
-    await prisma.flow.create({
-      data: {
-        workspaceId: workspace.id,
-        authorId: user.id,
-        name: template.name,
-        description: template.description,
-        emoji: template.emoji,
-        graph: JSON.stringify(template.graph),
-        triggerType: template.triggerType,
-        status: template.triggerType === "webhook" ? "published" : "draft",
-        webhookToken: template.triggerType === "webhook" ? `whk_${randomToken()}` : null,
-        versions: {
-          create: { version: 1, graph: JSON.stringify(template.graph), label: "Installed from template" },
-        },
-      },
-    });
-  }
-  console.log(`  flows     ${starterSlugs.length} starter flows`);
-
-  console.log("Done.");
+  console.log("Done. Create the first account at /signup.");
 }
 
-function randomToken(): string {
-  const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
-  let out = "";
-  for (let index = 0; index < 24; index += 1) {
-    out += alphabet[Math.floor(Math.random() * alphabet.length)];
+/**
+ * One-time cleanup for installs seeded by an earlier version, which shipped a
+ * `demo@wasl.app` account whose password was committed to the repository.
+ * Deleting the user cascades its memberships; the workspace is removed
+ * separately so its flows, runs and credentials go with it.
+ *
+ * Safe to keep running forever: after the first pass it is a no-op.
+ */
+async function removeLegacyDemoAccount() {
+  const demoUser = await prisma.user.findUnique({
+    where: { email: "demo@wasl.app" },
+    select: { id: true },
+  });
+  const demoWorkspace = await prisma.workspace.findUnique({
+    where: { slug: "demo" },
+    select: { id: true, name: true },
+  });
+
+  if (!demoUser && !demoWorkspace) return;
+
+  if (demoWorkspace) {
+    await prisma.workspace.delete({ where: { id: demoWorkspace.id } });
+    console.log("  removed   legacy demo workspace (and its flows/runs)");
   }
-  return out;
+  if (demoUser) {
+    await prisma.user.delete({ where: { id: demoUser.id } });
+    console.log("  removed   legacy demo account demo@wasl.app");
+  }
 }
 
 main()

@@ -6,7 +6,9 @@ import { memo } from "react";
 import { useBuilder } from "@/components/builder/store-context";
 import { useI18n } from "@/components/i18n-provider";
 import { Icon } from "@/components/icon";
+import { ProviderLogo } from "@/components/provider-logos";
 import type { BuilderNode } from "@/lib/builder-store";
+import { DEFAULT_MODEL, modelSpec } from "@/lib/models";
 import { CATEGORY_META, nodeDef, resolveInputs, resolveOutputs } from "@/lib/nodes/registry";
 import { cn, toText, truncate } from "@/lib/utils";
 
@@ -91,6 +93,15 @@ export const WaslNodeCard = memo(function WaslNodeCard({ id, data, selected }: N
             {summary || definition.type}
           </span>
         </span>
+
+        {/* Which provider this node calls, readable without opening it. */}
+        {definition.category === "ai" ? (
+          <ProviderLogo
+            provider={modelSpec(String((data.config ?? {}).model ?? DEFAULT_MODEL)).provider}
+            size={12}
+            className="mt-1 shrink-0 text-ink-400"
+          />
+        ) : null}
 
         {status ? (
           <span

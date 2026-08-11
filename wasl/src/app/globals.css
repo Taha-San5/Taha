@@ -32,6 +32,46 @@
   --radius-2xl: 1.125rem;
 }
 
+/* ---------------------------------------------------------------- theming
+ *
+ * The ink-* scale is ordered by lightness: 950 is the darkest surface and 100
+ * the lightest text. Light mode therefore *inverts the scale in place* rather
+ * than introducing a second set of utilities — `bg-ink-950` stays "page
+ * background" and `text-ink-100` stays "primary text" in both themes, so no
+ * component needs a single `light:` variant.
+ *
+ * The accent shades (emerald-300, rose-300, brand-300…) are used as text on a
+ * tinted background. Those exact steps are too pale on white, so light mode
+ * remaps them to darker equivalents to keep contrast legible.
+ */
+html.light {
+  --color-ink-950: #ffffff;
+  --color-ink-900: #f7f8fb;
+  --color-ink-850: #f1f3f8;
+  --color-ink-800: #e8ebf2;
+  --color-ink-700: #dce0ea;
+  --color-ink-600: #c3cad8;
+  --color-ink-500: #98a1b3;
+  --color-ink-400: #656e82;
+  --color-ink-300: #454c5d;
+  --color-ink-200: #272d3b;
+  --color-ink-100: #10131b;
+
+  --color-brand-300: #4338ca;
+  --color-brand-400: #4f46e5;
+  --color-accent-400: #0e7490;
+
+  --color-emerald-300: #047857;
+  --color-emerald-400: #059669;
+  --color-rose-300: #be123c;
+  --color-rose-400: #e11d48;
+  --color-amber-300: #b45309;
+  --color-amber-400: #d97706;
+  --color-sky-300: #0369a1;
+  --color-violet-300: #6d28d9;
+  --color-slate-200: #334155;
+}
+
 @layer base {
   * {
     border-color: var(--color-ink-700);
@@ -40,6 +80,10 @@
   html {
     color-scheme: dark;
     -webkit-text-size-adjust: 100%;
+  }
+
+  html.light {
+    color-scheme: light;
   }
 
   body {
@@ -88,6 +132,19 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-ink-600);
+  }
+}
+
+/* Subtle lift on hover for cards that link somewhere. */
+@utility hover-lift {
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -18px rgb(0 0 0 / 0.55);
   }
 }
 

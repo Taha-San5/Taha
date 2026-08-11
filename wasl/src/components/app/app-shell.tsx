@@ -8,6 +8,7 @@ import { useI18n } from "@/components/i18n-provider";
 import { Icon } from "@/components/icon";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { LogoMark } from "@/components/marketing/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge, Button } from "@/components/ui/kit";
 import { cn, formatNumber } from "@/lib/utils";
 
@@ -170,6 +171,12 @@ export function AppShell({
               <div className="flex items-center justify-between gap-2 px-1.5 py-1">
                 <span className="text-[11.5px] text-ink-400">{d.common.language}</span>
                 <LocaleSwitcher compact />
+              </div>
+              <div className="flex items-center justify-between gap-2 px-1.5 py-1">
+                <span className="text-[11.5px] text-ink-400">
+                  {locale === "ar" ? "المظهر" : "Appearance"}
+                </span>
+                <ThemeToggle className="size-7" />
               </div>
               <button
                 onClick={logout}

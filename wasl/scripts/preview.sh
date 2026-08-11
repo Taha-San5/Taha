@@ -30,7 +30,7 @@ AUTH_SECRET="$(rand)"
 ENCRYPTION_KEY="$(rand)"
 OPENAI_API_KEY=""
 OPENAI_BASE_URL="https://api.openai.com/v1"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
+# APP_URL is optional: the app derives its URL from the request when unset.
 EOF
 fi
 
@@ -49,14 +49,14 @@ cat <<'EOF'
   ───────────────────────────────────────────────
    Wasl is starting on  http://localhost:3000
 
-   Sign in:   demo@wasl.app
-   Password:  wasl1234
+   Create the first account at  /signup
+   (there is no shared demo account by design)
 
    Worth a look:
      /                    the landing page
+     /templates           10 templates, install in one click
      /app                 your flows
      /app/flows/<id>      the builder — hit "Test run"
-     /templates           10 installable templates
      /docs                node reference
 
    No API key needed: AI nodes use a simulated model,

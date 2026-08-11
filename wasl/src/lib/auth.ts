@@ -58,27 +58,8 @@ export async function requireAuth() {
   return context;
 }
 
-/** Creates a user with their personal workspace in one transaction. */
-export async function registerUser(input: { email: string; name: string; password: string; locale?: string }) {
-  const email = input.email.trim().toLowerCase();
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) {
-    throw new AuthError("EMAIL_TAKEN");
-  }
-
-  const passwordHash = await hashPassword(input.password);
-  const avatarColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
-
-  const user = await prisma.user.create({
-    data: {
-      email,
-      name: input.name.trim() || email.split("@")[0],
-      passwordHash,
-      avatarColor,
-      locale: input.locale === "en" ? "en" : "ar",
-    },
-  });
-
+/** Personal workspace with a unique slug and the free monthly credit grant. */
+async function createWorkspaceFor(user: { id: string; name: string }) {
   const baseSlug = slugify(user.name);
   let slug = baseSlug;
   let suffix = 1;
@@ -86,7 +67,7 @@ export async function registerUser(input: { email: string; name: string; passwor
     slug = `${baseSlug}-${++suffix}`;
   }
 
-  const workspace = await prisma.workspace.create({
+  return prisma.workspace.create({
     data: {
       name: `${user.name}'s workspace`,
       slug,
@@ -100,8 +81,100 @@ export async function registerUser(input: { email: string; name: string; passwor
       },
     },
   });
+}
 
+function randomAvatarColor(): string {
+  return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+}
+
+/** Creates a user with their personal workspace. */
+export async function registerUser(input: { email: string; name: string; password: string; locale?: string }) {
+  const email = input.email.trim().toLowerCase();
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) {
+    throw new AuthError("EMAIL_TAKEN");
+  }
+
+  const user = await prisma.user.create({
+    data: {
+      email,
+      name: input.name.trim() || email.split("@")[0],
+      passwordHash: await hashPassword(input.password),
+      avatarColor: randomAvatarColor(),
+      locale: input.locale === "ar" ? "ar" : "en",
+    },
+  });
+
+  const workspace = await createWorkspaceFor(user);
   return { user, workspace };
+}
+
+/**
+ * Signs in (or registers) a user from a verified Google profile.
+ *
+ * Matching is by `googleId` first, then by email so someone who originally
+ * signed up with a password can use Google afterwards without ending up with a
+ * duplicate account. Linking by email is only safe because Google tells us the
+ * address is verified — an unverified address is refused.
+ */
+export async function upsertGoogleUser(profile: {
+  sub: string;
+  email: string;
+  emailVerified: boolean;
+  name: string;
+  picture?: string;
+}) {
+  if (!profile.emailVerified) throw new AuthError("EMAIL_NOT_VERIFIED");
+
+  const byGoogleId = await prisma.user.findUnique({
+    where: { googleId: profile.sub },
+    include: { memberships: { orderBy: { createdAt: "asc" }, take: 1 } },
+  });
+
+  let user = byGoogleId;
+
+  if (!user) {
+    const byEmail = await prisma.user.findUnique({
+      where: { email: profile.email },
+      include: { memberships: { orderBy: { createdAt: "asc" }, take: 1 } },
+    });
+
+    if (byEmail) {
+      // Link Google to the existing password account.
+      user = await prisma.user.update({
+        where: { id: byEmail.id },
+        data: {
+          googleId: profile.sub,
+          avatarUrl: profile.picture ?? byEmail.avatarUrl,
+        },
+        include: { memberships: { orderBy: { createdAt: "asc" }, take: 1 } },
+      });
+    } else {
+      const created = await prisma.user.create({
+        data: {
+          email: profile.email,
+          name: profile.name,
+          googleId: profile.sub,
+          avatarUrl: profile.picture,
+          avatarColor: randomAvatarColor(),
+          locale: "en",
+        },
+      });
+      await createWorkspaceFor(created);
+      user = await prisma.user.findUniqueOrThrow({
+        where: { id: created.id },
+        include: { memberships: { orderBy: { createdAt: "asc" }, take: 1 } },
+      });
+    }
+  }
+
+  // An account can exist without a workspace if creation previously failed.
+  let workspaceId = user.memberships[0]?.workspaceId;
+  if (!workspaceId) {
+    workspaceId = (await createWorkspaceFor(user)).id;
+  }
+
+  return { user, workspaceId };
 }
 
 export async function authenticate(email: string, password: string) {
@@ -110,6 +183,10 @@ export async function authenticate(email: string, password: string) {
     include: { memberships: { orderBy: { createdAt: "asc" }, take: 1 } },
   });
   if (!user) throw new AuthError("INVALID_CREDENTIALS");
+
+  // Google-only accounts have no hash to compare against; say so rather than
+  // reporting a wrong password for a password that does not exist.
+  if (!user.passwordHash) throw new AuthError("USE_GOOGLE_SIGNIN");
 
   const ok = await verifyPassword(password, user.passwordHash);
   if (!ok) throw new AuthError("INVALID_CREDENTIALS");
@@ -121,7 +198,14 @@ export async function authenticate(email: string, password: string) {
 }
 
 export class AuthError extends Error {
-  constructor(public code: "EMAIL_TAKEN" | "INVALID_CREDENTIALS" | "NO_WORKSPACE") {
+  constructor(
+    public code:
+      | "EMAIL_TAKEN"
+      | "INVALID_CREDENTIALS"
+      | "NO_WORKSPACE"
+      | "USE_GOOGLE_SIGNIN"
+      | "EMAIL_NOT_VERIFIED",
+  ) {
     super(code);
     this.name = "AuthError";
   }

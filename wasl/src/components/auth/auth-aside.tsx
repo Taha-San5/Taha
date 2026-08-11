@@ -12,13 +12,13 @@ export function AuthAside() {
         "٢٨ نوع عقدة قابلة للتنفيذ",
         "تتبّع مباشر لكل عقدة",
         "بمفتاحك الخاص: تشغيل مجاني",
-        "واجهة عربية كاملة من اليمين لليسار",
+        "كل سير عمل هو ويب هوك وواجهة REST",
       ]
     : [
         "28 executable node types",
         "Live per-node run traces",
         "Free runs on your own model key",
-        "Complete Arabic RTL interface",
+        "Every flow is also a webhook and REST API",
       ];
 
   return (

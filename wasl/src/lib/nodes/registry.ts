@@ -1,10 +1,13 @@
-import { DEFAULT_MODEL, MODELS } from "@/lib/models";
+import { DEFAULT_MODEL, MODELS, PROVIDER_LABELS } from "@/lib/models";
 import type { HandleSpec, NodeCategory, NodeDefinition } from "@/lib/nodes/types";
 
 const IN: HandleSpec[] = [{ id: "in", label: "Input", labelAr: "دخل" }];
 const OUT: HandleSpec[] = [{ id: "out", label: "Output", labelAr: "خرج" }];
 
-const MODEL_OPTIONS = MODELS.map((model) => ({ value: model.id, label: `${model.label} · ${model.credits}cr` }));
+const MODEL_OPTIONS = MODELS.map((model) => ({
+  value: model.id,
+  label: `${PROVIDER_LABELS[model.provider]} · ${model.label} · ${model.credits}cr`,
+}));
 
 const MODEL_FIELD = {
   key: "model",

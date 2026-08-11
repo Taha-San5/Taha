@@ -8,6 +8,7 @@ import { useI18n } from "@/components/i18n-provider";
 import { Icon } from "@/components/icon";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { Logo } from "@/components/marketing/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button, ButtonLink } from "@/components/ui/kit";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
     { href: "/templates", label: d.nav.templates },
     { href: "/pricing", label: d.nav.pricing },
     { href: "/docs", label: d.nav.docs },
+    { href: "/about", label: d.about.nav },
   ];
 
   return (
@@ -58,6 +60,7 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
         </nav>
 
         <div className="ms-auto flex items-center gap-2">
+          <ThemeToggle />
           <LocaleSwitcher />
           {signedIn ? (
             <ButtonLink href="/app" size="sm" iconEnd="ArrowRight" className="hidden sm:inline-flex">

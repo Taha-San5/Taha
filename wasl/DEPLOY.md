@@ -38,8 +38,9 @@ railway up                      # builds the Dockerfile
 railway domain                  # prints the public URL
 ```
 
-Then set `NEXT_PUBLIC_APP_URL` to that URL and redeploy, so the webhook and API
-snippets shown in the builder use the real hostname.
+That URL works immediately — the app derives its own hostname from each
+request, so the webhook and API snippets in the builder are correct with no
+extra configuration and no rebuild.
 
 ## Render
 
@@ -77,7 +78,7 @@ Vercel's filesystem is read-only and ephemeral, so SQLite cannot work there.
    node scripts/set-db-provider.mjs postgresql
    ```
 3. In Vercel, set `DATABASE_URL`, `AUTH_SECRET`, `ENCRYPTION_KEY`,
-   `NEXT_PUBLIC_APP_URL`.
+   and optionally `APP_URL`.
 4. Deploy, then apply the schema and seed once from your machine:
    ```bash
    DATABASE_URL="<neon url>" npx prisma db push
@@ -102,11 +103,10 @@ docker run -d --name wasl-preview -p 3000:3000 \
   -e DATABASE_URL="file:/data/wasl.db" \
   -e AUTH_SECRET="$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")" \
   -e ENCRYPTION_KEY="$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")" \
-  -e NEXT_PUBLIC_APP_URL="http://localhost:3000" \
   wasl:preview
 ```
 
-Sign in with **demo@wasl.app / wasl1234**.
+Create the first account at `/signup`. There is no shared demo account.
 
 ## Environment variables
 
@@ -118,7 +118,9 @@ Sign in with **demo@wasl.app / wasl1234**.
 | `ENCRYPTION_KEY` | yes | 32+ chars. Encrypts stored credentials. **Changing it makes existing credentials unreadable.** |
 | `OPENAI_API_KEY` | no | Omit and AI nodes use the simulated model, badged in the UI. |
 | `OPENAI_BASE_URL` | no | Any OpenAI-compatible endpoint. |
-| `NEXT_PUBLIC_APP_URL` | no | Used in the webhook/API snippets shown in the builder. Set it to your real URL. |
+| `APP_URL` | no | Forces the URL shown in webhook/API snippets. Leave unset and it is derived from the request, so custom domains work without a rebuild. |
+| `GOOGLE_CLIENT_ID` | no | Enables the Google sign-in button. Hidden when unset. |
+| `GOOGLE_CLIENT_SECRET` | no | Required alongside the client id. |
 | `SKIP_SEED` | no | `1` to skip seeding on boot. |
 | `PORT` | no | Defaults to 3000. |
 
@@ -134,11 +136,32 @@ Sign in with **demo@wasl.app / wasl1234**.
 database is unreachable or the secrets are too short — so a bad deploy fails
 visibly instead of on first use.
 
+## Google sign-in
+
+Optional. Without it, email and password still works.
+
+1. In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials),
+   create an **OAuth client ID** of type *Web application*.
+2. Under **Authorised redirect URIs** add exactly:
+   `https://<your-domain>/api/auth/google/callback`
+   Add one entry per domain you use, including `http://localhost:3000/...` for
+   local development.
+3. Configure the OAuth consent screen (an *External* app in *Testing* mode is
+   enough while only you sign in).
+4. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on the service and redeploy.
+
+The flow uses `state` plus PKCE (S256), both stored in short-lived httpOnly
+cookies. A Google account whose email matches an existing password account is
+linked to it rather than duplicated — safe because Google reports the address as
+verified, and unverified addresses are refused.
+
 ## Before sharing the URL publicly
 
-- **Change the demo password**, or set `SKIP_SEED=1` and create your own account.
-  `demo@wasl.app / wasl1234` is in this repo, so anyone can read it.
-- Signup is open to anyone who finds the URL. There is no invite gate yet.
+- **Signup is open to anyone who finds the URL.** There is no invite gate yet, so
+  claim the first account immediately after deploying, and treat the URL as
+  private until you add one.
+- The seed creates no accounts. If you are upgrading a deployment that had the
+  old `demo@wasl.app` account, the seed deletes it on the next boot.
 - The **Run JavaScript** node uses `node:vm` with a timeout. That stops infinite
   loops but is not a security boundary — do not let untrusted people run it.
 - Scheduled triggers still need an external cron to fire them.
@@ -151,8 +174,7 @@ Built and run in a container before writing this:
 docker build -t wasl:preview .                          image built
 GET /api/health                                         200 {"status":"ok","templates":10}
 GET / /pricing /templates /docs /login /signup          200
-login demo@wasl.app                                     {"ok":true}
-POST /api/flows/<id>/run {"url":"https://example.com"}   succeeded, 4/4 nodes, 128ms, 1 credit
+signup + install template + run                         succeeded, 4/4 nodes, 1 credit
   trigger.manual -> data.scrape -> ai.summarize -> output.result
 ```
 

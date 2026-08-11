@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "check:models": "tsx scripts/check-model-credits.ts",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "rm -f prisma/dev.db && prisma db push && tsx prisma/seed.ts",

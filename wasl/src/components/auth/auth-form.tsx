@@ -6,9 +6,10 @@ import { useState } from "react";
 
 import { useI18n } from "@/components/i18n-provider";
 import { Icon } from "@/components/icon";
+import { GoogleLogo } from "@/components/provider-logos";
 import { Alert, Button, Field, Input } from "@/components/ui/kit";
 
-export function AuthForm({ mode }: { mode: "login" | "signup" }) {
+export function AuthForm({ mode, googleEnabled }: { mode: "login" | "signup"; googleEnabled: boolean }) {
   const { d, locale } = useI18n();
   const router = useRouter();
   const params = useSearchParams();
@@ -24,9 +25,19 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   function messageFor(code: string): string {
     if (code === "EMAIL_TAKEN") return d.auth.emailTaken;
+    if (code === "USE_GOOGLE_SIGNIN") return d.auth.useGoogleSignin;
     if (code === "INVALID_CREDENTIALS" || code === "NO_WORKSPACE") return d.auth.invalidCredentials;
     return code || d.common.error;
   }
+
+  // The OAuth callback reports failures by redirecting back with ?error=...
+  const oauthError = params.get("error");
+  const oauthMessage = oauthError
+    ? ((d.auth.googleErrors as Record<string, string>)[oauthError] ?? d.auth.googleErrors.google_failed)
+    : null;
+
+  const nextParam = params.get("next");
+  const googleHref = `/api/auth/google${nextParam ? `?next=${encodeURIComponent(nextParam)}` : ""}`;
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -79,6 +90,25 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       </header>
 
       {error ? <Alert tone="danger">{error}</Alert> : null}
+      {oauthMessage && !error ? <Alert tone="danger">{oauthMessage}</Alert> : null}
+
+      {googleEnabled ? (
+        <>
+          <a
+            href={googleHref}
+            className="flex h-11 w-full items-center justify-center gap-2.5 rounded-xl border border-ink-600 bg-ink-900/60 text-[14px] font-medium text-ink-100 transition-colors hover:border-ink-500 hover:bg-ink-800"
+          >
+            <GoogleLogo size={17} />
+            {d.auth.google}
+          </a>
+
+          <div className="flex items-center gap-3">
+            <span className="h-px flex-1 bg-ink-700" />
+            <span className="text-[11.5px] text-ink-500">{d.auth.orDivider}</span>
+            <span className="h-px flex-1 bg-ink-700" />
+          </div>
+        </>
+      ) : null}
 
       <form onSubmit={submit} className="space-y-4">
         {isSignup ? (
@@ -144,24 +174,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         </Link>
       </p>
 
-      {!isSignup ? (
-        <div className="rounded-lg border border-ink-700 bg-ink-900/60 p-3">
-          <p className="text-[11.5px] font-medium tracking-wide text-ink-400 uppercase">{d.auth.demoHint}</p>
-          <div className="mt-2 flex items-center justify-between gap-3">
-            <code className="text-[12px] text-ink-200">demo@wasl.app · wasl1234</code>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() => {
-                setEmail("demo@wasl.app");
-                setPassword("wasl1234");
-              }}
-            >
-              {locale === "ar" ? "املأ" : "Fill"}
-            </Button>
-          </div>
-        </div>
-      ) : null}
+
     </div>
   );
 }

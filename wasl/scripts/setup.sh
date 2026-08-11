@@ -24,7 +24,7 @@ ENCRYPTION_KEY="${ENCRYPTION_KEY}"
 OPENAI_API_KEY=""
 OPENAI_BASE_URL="https://api.openai.com/v1"
 
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
+# APP_URL is optional: the app derives its URL from the request when unset.
 EOF
 fi
 
@@ -43,8 +43,7 @@ Ready. Start the dev server with:
 
   npm run dev
 
-Then sign in at http://localhost:3000/login with:
-
-  demo@wasl.app / wasl1234
+Then create the first account at http://localhost:3000/signup
+(there is no shared demo account by design).
 
 EOF

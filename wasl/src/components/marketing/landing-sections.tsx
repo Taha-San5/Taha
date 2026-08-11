@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useI18n } from "@/components/i18n-provider";
 import { Icon } from "@/components/icon";
 import { FlowPreview } from "@/components/marketing/flow-preview";
+import { ProviderLogo } from "@/components/provider-logos";
 import { Badge, ButtonLink } from "@/components/ui/kit";
+import { MODELS, PROVIDER_LABELS } from "@/lib/models";
 import { CATEGORY_META, CATEGORY_ORDER, NODE_DEFINITIONS } from "@/lib/nodes/registry";
 import { cn, formatNumber } from "@/lib/utils";
 
@@ -70,6 +72,65 @@ export function Hero() {
         <div className="animate-fade-up mt-14 overflow-x-auto pb-2" style={{ animationDelay: "300ms" }}>
           <FlowPreview className="mx-auto min-w-[760px] max-w-4xl" />
         </div>
+      </div>
+    </section>
+  );
+}
+
+export function ProviderStrip() {
+  const { locale } = useI18n();
+
+  // Group the catalog by provider so this never drifts from what is selectable.
+  const providers = [...new Set(MODELS.map((model) => model.provider))].map((provider) => ({
+    provider,
+    label: PROVIDER_LABELS[provider],
+    count: MODELS.filter((model) => model.provider === provider).length,
+  }));
+
+  return (
+    <section className="border-y border-ink-800 bg-ink-900/20">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <p className="text-center text-[11.5px] font-medium tracking-[0.12em] text-ink-500 uppercase">
+          {locale === "ar" ? "يعمل مع أحدث النماذج من" : "Runs on the latest models from"}
+        </p>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          {providers.map(({ provider, label, count }) => (
+            <div
+              key={provider}
+              className="group flex items-center gap-3 rounded-xl border border-ink-800 bg-ink-900/50 px-4 py-3 transition-colors hover:border-ink-600"
+            >
+              <ProviderLogo
+                provider={provider}
+                size={22}
+                className={cn(
+                  "shrink-0 transition-transform duration-200 group-hover:scale-110",
+                  provider === "google" ? undefined : "text-ink-100",
+                )}
+              />
+              <div className="min-w-0">
+                <p className="text-[13.5px] font-medium text-ink-100">{label}</p>
+                <p className="text-[11px] text-ink-500 tabular">
+                  {count} {locale === "ar" ? "نماذج" : "models"}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-[12.5px] text-ink-400">
+          {locale === "ar" ? (
+            <>
+              أو أي نقطة نهاية متوافقة مع OpenAI.{" "}
+              <span className="text-brand-300">بمفتاحك الخاص، استدعاءات الموديل بصفر رصيد.</span>
+            </>
+          ) : (
+            <>
+              Or any OpenAI-compatible endpoint.{" "}
+              <span className="text-brand-300">On your own key, model calls cost zero credits.</span>
+            </>
+          )}
+        </p>
       </div>
     </section>
   );

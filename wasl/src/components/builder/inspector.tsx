@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { ModelPicker } from "@/components/builder/model-picker";
 import { useBuilder } from "@/components/builder/store-context";
 import { useI18n } from "@/components/i18n-provider";
+import { DEFAULT_MODEL } from "@/lib/models";
 import { Icon } from "@/components/icon";
 import { Badge, Button, EmptyState, Field, Input, JsonView, Select, Switch, Textarea } from "@/components/ui/kit";
 import { typeOf, type BuilderNode } from "@/lib/builder-store";
@@ -321,8 +323,14 @@ function FieldEditor({
         </div>
       );
 
-    case "select":
     case "model":
+      return (
+        <Field label={label} hint={hint} help={help}>
+          <ModelPicker value={toText(value) || DEFAULT_MODEL} onChange={onChange} />
+        </Field>
+      );
+
+    case "select":
       return (
         <Field label={label} hint={hint} help={help}>
           <Select value={toText(value)} onChange={(event) => onChange(event.target.value)}>

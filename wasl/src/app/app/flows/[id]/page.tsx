@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { Builder } from "@/components/builder/builder";
+import { getAppUrl } from "@/lib/app-url";
 import { requireAuth } from "@/lib/auth";
 import { toFlowDetail } from "@/lib/flows";
 import { prisma } from "@/lib/prisma";
@@ -36,7 +37,7 @@ export default async function FlowBuilderPage({ params }: Props) {
         version: detail.version,
       }}
       graph={detail.graph}
-      appUrl={process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}
+      appUrl={await getAppUrl()}
     />
   );
 }

@@ -1,6 +1,8 @@
-export const LOCALES = ["ar", "en"] as const;
+export const LOCALES = ["en", "ar"] as const;
 export type Locale = (typeof LOCALES)[number];
-export const DEFAULT_LOCALE: Locale = "ar";
+// English is the default for new visitors; Arabic is available from the
+// language switcher and is a fully supported, RTL-correct locale.
+export const DEFAULT_LOCALE: Locale = "en";
 export const LOCALE_COOKIE = "wasl_locale";
 
 export function dirFor(locale: Locale): "rtl" | "ltr" {
@@ -58,7 +60,7 @@ const en = {
     dashboard: "Dashboard",
   },
   landing: {
-    badge: "Arabic-first AI automation",
+    badge: "Visual AI workflow automation",
     heroTitle: "Build AI coworkers,",
     heroTitleAccent: "not spreadsheets",
     heroSubtitle:
@@ -115,9 +117,9 @@ const en = {
     nodesSubtitle: "Composable building blocks that all speak the same data language.",
     compareTitle: "Why teams pick Wasl",
     compareRows: [
-      { label: "Arabic UI and RTL canvas", wasl: "Native", others: "Not available" },
       { label: "Model calls on your own key", wasl: "0 credits", others: "Marked up" },
       { label: "Per-node input/output trace", wasl: "Always on", others: "Partial" },
+      { label: "Automatic per-item fan-out", wasl: "Native", others: "Manual loops" },
       { label: "Natural-language flow builder", wasl: "Built in", others: "Add-on" },
       { label: "Self-host the whole engine", wasl: "Yes", others: "Rarely" },
     ],
@@ -229,7 +231,18 @@ const en = {
     noAccount: "New to Wasl?",
     emailTaken: "That email is already registered.",
     invalidCredentials: "Wrong email or password.",
-    demoHint: "Demo account",
+    useGoogleSignin: "This account was created with Google. Use the button above.",
+    google: "Continue with Google",
+    orDivider: "or",
+    googleErrors: {
+      google_not_configured: "Google sign-in is not configured on this deployment.",
+      google_cancelled: "Google sign-in was cancelled.",
+      google_expired: "That sign-in attempt expired. Please try again.",
+      google_state_mismatch: "The sign-in request could not be verified. Please try again.",
+      google_bad_response: "Google returned an unexpected response.",
+      google_email_unverified: "Your Google email address is not verified.",
+      google_failed: "Google sign-in failed. Please try again.",
+    },
   },
   app: {
     flows: "Flows",
@@ -389,6 +402,63 @@ const en = {
       selfhost: "Self-hosting",
     },
   },
+  about: {
+    nav: "About",
+    eyebrow: "The person behind it",
+    name: "Taha Abdelrahman",
+    role: "Founder & sole engineer, Wasl",
+    lede:
+      "I build tools that take repetitive thinking off people's plates. Wasl is the one I needed most, so I built it first.",
+    storyTitle: "Why Wasl exists",
+    story: [
+      "Automation tools are very good at moving data and hopeless at forming a judgement. Language models form judgements beautifully and cannot run at six in the morning, reach into your systems, or remember what happened yesterday. Wasl lives in the gap between those two facts.",
+      "I kept watching capable people spend their best hours on work a machine should have finished overnight — opening the same pages, making the same calls, writing the same summary in slightly different words. That is not a people problem. It is a missing tool.",
+      "The bet behind Wasl is that the model was never the hard part. The hard part is everything around it: ordering the steps, branching on the answer, looping over a list, recovering from the call that failed, and above all being able to see exactly what happened when the result is wrong.",
+    ],
+    principlesTitle: "What I refuse to compromise on",
+    principles: [
+      {
+        title: "Nothing is a black box",
+        body: "Every node records its inputs, its output, its logs, how long it took and what it cost. If an automation surprises you, you should be able to see why in seconds — not guess.",
+      },
+      {
+        title: "Your key, your bill",
+        body: "Attach your own model key and those calls cost zero credits. I would rather be paid for the orchestration I actually built than take a margin on somebody else's tokens.",
+      },
+      {
+        title: "Failure should be legible",
+        body: "A branch that was not taken is marked skipped, not failed. An unreachable page names the host it could not reach. Error messages are written for the person reading them at midnight.",
+      },
+      {
+        title: "Verified, not assumed",
+        body: "Every release runs an end-to-end suite that boots the built app and exercises it for real. It has caught bugs I would otherwise have shipped, including several found only against the live deployment.",
+      },
+    ],
+    craftTitle: "What is actually under the hood",
+    craftLede: "No wrappers, no hand-waving. This is the real inventory.",
+    craft: [
+      { label: "Execution engine", value: "Topologically ordered DAG runner with cycle rejection, automatic per-item fan-out, branch skipping and error routing" },
+      { label: "Node catalogue", value: "28 executable node types across triggers, AI, data, logic, actions and output" },
+      { label: "Models", value: "9 current models across 3 providers, with credit cost derived from list price rather than invented" },
+      { label: "Security", value: "AES-256-GCM credential vault, SSRF blocklist on user-supplied URLs, OAuth with PKCE, sandboxed code node" },
+      { label: "Interface", value: "English and Arabic with correct RTL, light and dark themes, live run traces streamed over SSE" },
+      { label: "Confidence", value: "52 end-to-end checks covering auth, branching, fan-out, webhooks and the public REST API" },
+    ],
+    numbersTitle: "By the numbers",
+    numbers: {
+      nodes: "executable node types",
+      models: "models available",
+      providers: "model providers",
+      checks: "end-to-end checks",
+    },
+    contactTitle: "Say hello",
+    contactBody:
+      "I read everything. If you are automating something painful, or you found a rough edge in Wasl, I want to hear about it.",
+    contactEmail: "Email",
+    tryTitle: "See it work",
+    tryBody: "The fastest way to understand Wasl is to run something. Pick a template and press Test run.",
+    tryCta: "Open the templates",
+  },
 } as const;
 
 const ar = {
@@ -438,7 +508,7 @@ const ar = {
     dashboard: "لوحة التحكم",
   },
   landing: {
-    badge: "أتمتة ذكية عربية أولاً",
+    badge: "أتمتة مرئية بالذكاء الاصطناعي",
     heroTitle: "ابنِ زملاء عمل أذكياء،",
     heroTitleAccent: "لا جداول بيانات",
     heroSubtitle:
@@ -495,9 +565,9 @@ const ar = {
     nodesSubtitle: "وحدات بناء متكاملة تتحدث جميعها نفس لغة البيانات.",
     compareTitle: "لماذا تختار الفرق وصل",
     compareRows: [
-      { label: "واجهة عربية ولوحة من اليمين لليسار", wasl: "أصلية", others: "غير متوفرة" },
       { label: "استدعاءات الموديل بمفتاحك", wasl: "صفر رصيد", others: "بهامش ربح" },
       { label: "تتبّع مدخلات ومخرجات كل عقدة", wasl: "دائماً", others: "جزئي" },
+      { label: "توسّع تلقائي على كل عنصر", wasl: "أصلي", others: "حلقات يدوية" },
       { label: "بناء سير العمل بلغة طبيعية", wasl: "مدمج", others: "إضافة" },
       { label: "تشغيل المحرّك على سيرفرك", wasl: "نعم", others: "نادراً" },
     ],
@@ -609,7 +679,18 @@ const ar = {
     noAccount: "جديد على وصل؟",
     emailTaken: "هذا البريد مسجّل مسبقاً.",
     invalidCredentials: "البريد أو كلمة المرور غير صحيحة.",
-    demoHint: "حساب تجريبي",
+    useGoogleSignin: "هذا الحساب أُنشئ بجوجل. استخدم الزر أعلاه.",
+    google: "المتابعة بحساب جوجل",
+    orDivider: "أو",
+    googleErrors: {
+      google_not_configured: "تسجيل الدخول بجوجل غير مُهيّأ على هذا النشر.",
+      google_cancelled: "أُلغي تسجيل الدخول بجوجل.",
+      google_expired: "انتهت صلاحية المحاولة. أعد المحاولة.",
+      google_state_mismatch: "تعذّر التحقق من الطلب. أعد المحاولة.",
+      google_bad_response: "أعادت جوجل استجابة غير متوقعة.",
+      google_email_unverified: "بريدك في جوجل غير مُوثَّق.",
+      google_failed: "فشل تسجيل الدخول بجوجل. أعد المحاولة.",
+    },
   },
   app: {
     flows: "سير العمل",
@@ -766,6 +847,63 @@ const ar = {
       api: "واجهة REST",
       selfhost: "الاستضافة الذاتية",
     },
+  },
+  about: {
+    nav: "من نحن",
+    eyebrow: "الشخص وراء المنصّة",
+    name: "طه عبدالرحمن",
+    role: "المؤسّس والمهندس الوحيد لـ وصل",
+    lede:
+      "أبني أدوات تشيل التفكير المتكرر عن كاهل الناس. ووصل هي الأداة التي احتجتها أكثر من غيرها، فبنيتها أولاً.",
+    storyTitle: "لماذا وُجدت وصل",
+    story: [
+      "أدوات الأتمتة بارعة في نقل البيانات وعاجزة تماماً عن إصدار حكم. والموديلات اللغوية تُصدر الأحكام ببراعة لكنها لا تعمل في السادسة صباحاً، ولا تصل إلى أنظمتك، ولا تتذكّر ما حدث بالأمس. وصل تسكن الفراغ بين هاتين الحقيقتين.",
+      "كنت أرى أشخاصاً أكفاء يُنفقون أفضل ساعاتهم في عمل كان يجب أن تُنهيه آلة أثناء الليل — يفتحون الصفحات نفسها، ويجرون المكالمات نفسها، ويكتبون الملخّص نفسه بكلمات مختلفة قليلاً. هذه ليست مشكلة في الناس، بل أداة ناقصة.",
+      "الفرضية التي تقوم عليها وصل أن الموديل لم يكن يوماً الجزء الصعب. الصعب هو كل ما يحيط به: ترتيب الخطوات، والتفريع حسب الإجابة، والتكرار على قائمة، والتعافي من النداء الذي فشل — وقبل ذلك كله، أن تكون قادراً على رؤية ما حدث بالضبط عندما تكون النتيجة خاطئة.",
+    ],
+    principlesTitle: "ما لا أتنازل عنه",
+    principles: [
+      {
+        title: "لا شيء صندوق أسود",
+        body: "كل عقدة تسجّل مدخلاتها ومخرجاتها وسجلّها ومدّتها وتكلفتها. إن فاجأتك الأتمتة، يجب أن ترى السبب في ثوانٍ — لا أن تُخمّن.",
+      },
+      {
+        title: "مفتاحك، وفاتورتك",
+        body: "أرفق مفتاح الموديل الخاص بك فتصبح تلك الاستدعاءات بصفر رصيد. أفضّل أن يُدفع لي مقابل التنسيق الذي بنيته فعلاً، لا أن آخذ هامشاً على رموز غيري.",
+      },
+      {
+        title: "الفشل يجب أن يكون مقروءاً",
+        body: "المسار غير المُتَّخذ يُعلَّم «تم تخطيه» لا «فشل». والصفحة غير المتاحة تذكر المُضيف الذي تعذّر الوصول إليه. رسائل الأخطاء مكتوبة لمن يقرأها منتصف الليل.",
+      },
+      {
+        title: "متحقَّق منه، لا مُفترض",
+        body: "كل إصدار يمرّ على مجموعة اختبارات شاملة تُشغّل التطبيق المبني وتختبره فعلياً. وقد أمسكت أخطاءً كنت سأطلقها، بعضها ظهر فقط على النشر الحقيقي.",
+      },
+    ],
+    craftTitle: "ما يوجد فعلاً تحت الغطاء",
+    craftLede: "بلا أغلفة ولا مبالغات. هذا الجرد الحقيقي.",
+    craft: [
+      { label: "محرّك التنفيذ", value: "مخطّط موجّه مرتّب طوبولوجياً يرفض الحلقات، مع توسّع تلقائي لكل عنصر، وتخطّي المسارات، وتوجيه الأخطاء" },
+      { label: "كتالوج العُقد", value: "٢٨ نوع عقدة قابلة للتنفيذ بين المشغّلات والذكاء الاصطناعي والبيانات والمنطق والإجراءات والمخرجات" },
+      { label: "النماذج", value: "٩ نماذج حديثة من ٣ مزوّدين، وتكلفة الرصيد مشتقّة من سعر القائمة لا مُختَرعة" },
+      { label: "الأمان", value: "خزنة مفاتيح بمعيار AES-256-GCM، وحجب SSRF للروابط، ومصادقة OAuth بـ PKCE، وعقدة كود بمهلة تنفيذ" },
+      { label: "الواجهة", value: "الإنجليزية والعربية بدعم RTL صحيح، ووضع فاتح وغامق، وتتبّع مباشر للتشغيل عبر SSE" },
+      { label: "الثقة", value: "٥٢ فحصاً شاملاً يغطي المصادقة والتفريع والتوسّع والويب هوك وواجهة REST العامة" },
+    ],
+    numbersTitle: "بالأرقام",
+    numbers: {
+      nodes: "نوع عقدة قابلة للتنفيذ",
+      models: "نموذجاً متاحاً",
+      providers: "مزوّدي نماذج",
+      checks: "فحصاً شاملاً",
+    },
+    contactTitle: "تواصل معي",
+    contactBody:
+      "أقرأ كل رسالة. إن كنت تُؤتمت شيئاً مُتعباً، أو وجدت خللاً في وصل، أريد أن أعرف.",
+    contactEmail: "البريد",
+    tryTitle: "شاهدها تعمل",
+    tryBody: "أسرع طريق لفهم وصل أن تُشغّل شيئاً. اختر قالباً واضغط «تشغيل تجريبي».",
+    tryCta: "افتح القوالب",
   },
 } as const;
 

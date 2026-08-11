@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ApiKeysManager } from "@/components/app/api-keys-manager";
+import { getAppUrl } from "@/lib/app-url";
 import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -16,7 +17,7 @@ export default async function ApiKeysPage() {
 
   return (
     <ApiKeysManager
-      appUrl={process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}
+      appUrl={await getAppUrl()}
       keys={keys.map((key) => ({
         id: key.id,
         name: key.name,

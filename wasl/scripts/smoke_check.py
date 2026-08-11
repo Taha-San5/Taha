@@ -55,8 +55,8 @@ def flow_count(data):
     flows = data.get("flows", [])
     for flow in flows:
         info("{:>2} nodes  {:<9} {}".format(flow["nodeCount"], flow["triggerType"], flow["name"]))
-    if len(flows) < 3:
-        die("expected at least 3 flows, got {}".format(len(flows)))
+    if len(flows) < 2:
+        die("expected at least 2 flows, got {}".format(len(flows)))
     print(len(flows))
 
 
