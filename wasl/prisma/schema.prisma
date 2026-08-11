@@ -1,0 +1,246 @@
+// Wasl — AI workflow automation platform
+// SQLite for local dev. Swap `provider` to "postgresql" for production;
+// every JSON payload is stored as TEXT so the schema is portable as-is.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id     String @id @default(cuid())
+  email  String @unique
+  name   String
+  // Null for accounts created through an identity provider, which have no
+  // password to verify. Always check before calling bcrypt.compare.
+  passwordHash String?
+  // Google's stable subject id. Kept separate from email so a user changing
+  // their Google display email does not orphan the account.
+  googleId    String? @unique
+  avatarUrl   String?
+  avatarColor String  @default("#6366f1")
+  locale      String  @default("en")
+  isAdmin     Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships Membership[]
+  flows       Flow[]
+  runs        Run[]
+  templates   Template[]
+}
+
+model Workspace {
+  id        String @id @default(cuid())
+  name      String
+  slug      String @unique
+  plan      String @default("free") // free | solo | team | enterprise
+  avatarUrl String?
+
+  // Credits are the usage currency, mirroring Gumloop's model but with
+  // BYO-key runs costing zero. Reset monthly by the billing cron.
+  creditBalance   Int      @default(5000)
+  creditsIncluded Int      @default(5000)
+  periodStart     DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships Membership[]
+  flows       Flow[]
+  runs        Run[]
+  credentials Credential[]
+  apiKeys     ApiKey[]
+  ledger      CreditLedger[]
+}
+
+model Membership {
+  id          String @id @default(cuid())
+  userId      String
+  workspaceId String
+  role        String @default("owner") // owner | admin | editor | viewer
+
+  createdAt DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+model Flow {
+  id          String  @id @default(cuid())
+  workspaceId String
+  authorId    String
+  name        String
+  description String  @default("")
+  emoji       String  @default("zap")
+  status      String  @default("draft") // draft | published | paused
+  isArchived  Boolean @default(false)
+
+  // The canvas graph: { nodes: WaslNode[], edges: WaslEdge[] }
+  graph String @default("{\"nodes\":[],\"edges\":[]}")
+
+  // Trigger config: { type: "manual" | "webhook" | "schedule" | "chat", ... }
+  triggerType   String  @default("manual")
+  triggerConfig String  @default("{}")
+  webhookToken  String? @unique
+
+  version   Int      @default(1)
+  lastRunAt DateTime?
+  runCount  Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspace Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  author    User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  versions  FlowVersion[]
+  runs      Run[]
+
+  @@index([workspaceId, isArchived])
+}
+
+model FlowVersion {
+  id      String @id @default(cuid())
+  flowId  String
+  version Int
+  graph   String
+  label   String @default("")
+
+  createdAt DateTime @default(now())
+
+  flow Flow @relation(fields: [flowId], references: [id], onDelete: Cascade)
+
+  @@unique([flowId, version])
+}
+
+model Run {
+  id          String @id @default(cuid())
+  flowId      String
+  workspaceId String
+  userId      String?
+
+  status     String  @default("queued") // queued | running | succeeded | failed | cancelled
+  trigger    String  @default("manual") // manual | webhook | schedule | api | chat
+  inputs     String  @default("{}")
+  outputs    String  @default("{}")
+  error      String?
+  creditsUsed Int    @default(0)
+
+  // Snapshot of the graph at run time so history stays reproducible.
+  graphSnapshot String @default("{\"nodes\":[],\"edges\":[]}")
+
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  durationMs Int?
+
+  flow      Flow      @relation(fields: [flowId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  nodeRuns  NodeRun[]
+
+  @@index([flowId, startedAt])
+  @@index([workspaceId, startedAt])
+}
+
+model NodeRun {
+  id     String @id @default(cuid())
+  runId  String
+  nodeId String
+  type   String
+  label  String @default("")
+
+  status      String  @default("pending") // pending | running | succeeded | failed | skipped
+  inputs      String  @default("{}")
+  output      String  @default("null")
+  logs        String  @default("[]")
+  error       String?
+  creditsUsed Int     @default(0)
+  attempt     Int     @default(1)
+  order       Int     @default(0)
+
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  durationMs Int?
+
+  run Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId, order])
+}
+
+model Credential {
+  id          String @id @default(cuid())
+  workspaceId String
+  name        String
+  provider    String // openai | anthropic | slack | notion | http | google ...
+  // Encrypted at rest with AES-256-GCM (see lib/crypto.ts)
+  secretCipher String
+  meta        String @default("{}")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, name])
+}
+
+model ApiKey {
+  id          String  @id @default(cuid())
+  workspaceId String
+  name        String
+  prefix      String
+  hash        String  @unique
+  lastUsedAt  DateTime?
+  revokedAt   DateTime?
+
+  createdAt DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model CreditLedger {
+  id          String @id @default(cuid())
+  workspaceId String
+  delta       Int
+  reason      String // run | topup | monthly_reset | adjustment
+  refId       String?
+  balanceAfter Int   @default(0)
+
+  createdAt DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+}
+
+model Template {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  nameAr      String  @default("")
+  description String
+  descriptionAr String @default("")
+  category    String  @default("general")
+  emoji       String  @default("sparkles")
+  graph       String
+  featured    Boolean @default(false)
+  installs    Int     @default(0)
+  authorId    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author User? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([category])
+}

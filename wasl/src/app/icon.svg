@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="g" x1="5" y1="16" x2="27" y2="9" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a5b4fc"/>
+      <stop offset="0.55" stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <!-- Favicons render tiny, so the mark sits on a dark tile for contrast
+       against light browser chrome. -->
+  <rect width="32" height="32" rx="7" fill="#0a0c12"/>
+  <path d="M8.5 16C13.4 16 14.7 9.4 23 9.4" stroke="url(#g)" stroke-width="2.3" stroke-linecap="round"/>
+  <path d="M8.5 16C13.4 16 14.7 22.6 23 22.6" stroke="url(#g)" stroke-width="2.3" stroke-linecap="round" opacity="0.55"/>
+  <circle cx="7.7" cy="16" r="3.2" fill="url(#g)"/>
+  <circle cx="24" cy="9.4" r="2.6" fill="url(#g)"/>
+  <circle cx="24" cy="22.6" r="2.6" fill="url(#g)" opacity="0.62"/>
+</svg>
